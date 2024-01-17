@@ -1,8 +1,7 @@
 "use client";
-import React from 'react';
+import Disclaimer from "@/components/composite/disclaimer";
+import React from "react";
 
 export default function TalkCarly() {
-  return (
-    <div>Talk Carly</div>
-  );
+  return <Disclaimer message="This is a disclaimer - Talk to Carly" />;
 }

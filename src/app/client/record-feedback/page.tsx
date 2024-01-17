@@ -1,8 +1,7 @@
 "use client";
-import React from 'react'
+import Disclaimer from "@/components/composite/disclaimer";
+import React from "react";
 
-export default function RecordFeedback(){
-  return (
-    <div>Record Feedback</div>
-  )
+export default function RecordFeedback() {
+  return <Disclaimer message="This is a disclaimer - Record Feedback" />;
 }
