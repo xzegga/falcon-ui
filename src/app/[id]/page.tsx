@@ -85,7 +85,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
               <Separator orientation="vertical" className="mx-1 h-6" />
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" disabled={!recording}>
+                  <Button size="icon" disabled={!recording}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Move to trash</span>
                   </Button>

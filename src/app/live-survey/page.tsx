@@ -3,6 +3,6 @@ import React from 'react'
 
 export default function LiveSurvey(){
   return (
-    <div>LiveSurvey</div>
+    <div>Live Survey</div>
   )
 }

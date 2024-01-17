@@ -2,8 +2,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
+  const router = useRouter();
+
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
       <div className="w-1/3 text-justify border-2 bg-warning-50 border-warning-500 pt-4 p-6">
@@ -18,9 +21,9 @@ export default function LandingPage() {
         thoughtful responses.
       </div>
       <div className="w-2/4 mt-8 flex gap-4 justify-center">
-        <Button className="py-2 px-4 rounded">Record Feedback</Button>
-        <Button className="py-2 px-4 rounded">Live Survey</Button>
-        <Button className="py-2 px-4 rounded">Talk to Carly</Button>
+        <Button onClick={()=>router.push('/record-feedback')} className="py-2 px-4 rounded">Record Feedback</Button>
+        <Button onClick={()=>router.push('/live-survey')} className="py-2 px-4 rounded">Live Survey</Button>
+        <Button onClick={()=>router.push('/talk-carly')} className="py-2 px-4 rounded">Talk to Carly</Button>
       </div>
     </div>
   );

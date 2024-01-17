@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ResizableBaseLayout } from "@/components/composite/resizable-base-layout";
-import { LandingPage } from "@/components/composite/landing-page";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/ui/navbar";
 
