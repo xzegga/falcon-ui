@@ -2,6 +2,10 @@ import { useRef, useEffect, useState } from 'react'
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
 
+interface ExpressionSummary {
+  [key: string]: number;
+}
+
 export default function ScreenEmotions({ id }: { id: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,8 +83,8 @@ export default function ScreenEmotions({ id }: { id: string }) {
           .withFaceLandmarks()
           .withFaceExpressions();
 
-        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-          videoRef.current
+        canvasRef.current.appendChild(
+          faceapi.createCanvasFromMedia(videoRef.current)
         );
         faceapi.matchDimensions(canvasRef.current, {
           width: 900,
@@ -90,9 +94,10 @@ export default function ScreenEmotions({ id }: { id: string }) {
         const [myemotion] = detections;
         if (myemotion) {
           const { expressions } = myemotion;
+          const expressionList = expressions as any as ExpressionSummary;
           const emotionDetected = Object.keys(expressions).reduce(
             (acc, value) => {
-              return expressions[acc] > expressions[value] ? acc : value;
+              return expressionList[acc] > expressionList[value] ? acc : value;
             },
             ""
           );

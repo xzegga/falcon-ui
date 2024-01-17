@@ -1,24 +1,14 @@
 import { NextResponse } from "next/server";
-import path from "path";
-import { writeFile } from "fs/promises";
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@/lib/supabase/edge";
 import { SUPABASE_CONSTANTS } from "@/lib/supabase/constants";
+import { RequestCookies } from "@edge-runtime/cookies";
 
-export const POST = async (req: any, res: any) => {
-  //tipar
-  const supabase = createClient(
-    SUPABASE_CONSTANTS.NEXT_PUBLIC_SUPABASE_URL,
-    SUPABASE_CONSTANTS.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false,
-      },
-    }
-  );
+export const POST = async (request: Request) => {
+  const cookies = new RequestCookies(request.headers);
 
-  const formData = await req.formData();
+  const supabase = createClient(cookies);
+
+  const formData = await request.formData();
   const file = formData.get("file");
   const id = formData.get("id");
 
