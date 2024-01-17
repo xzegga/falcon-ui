@@ -1,12 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
-import * as faceapi from 'face-api.js'
-<<<<<<< HEAD
+import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
-export default function ScreenEmotions({ id }: { id: string }) {
-=======
 
-export default function ScreenEmotions() {
->>>>>>> fe7e0f8decc2c9caff8e12da23d7b0db5769998f
+export default function ScreenEmotions({ id }: { id: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [emotions, setEmotions] = useState<{ emotion: string; date: Date }[]>(
