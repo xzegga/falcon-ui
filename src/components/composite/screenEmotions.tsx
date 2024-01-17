@@ -1,18 +1,16 @@
 import { useRef, useEffect, useState } from 'react'
 import * as faceapi from 'face-api.js'
-<<<<<<< HEAD
 import { useUploadFile } from "@/lib/store";
+import { useSurvey } from "@/lib/db";
+import { v4 as uuidv4 } from 'uuid';
 export default function ScreenEmotions({ id }: { id: string }) {
-=======
-
-export default function ScreenEmotions() {
->>>>>>> fe7e0f8decc2c9caff8e12da23d7b0db5769998f
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [emotions, setEmotions] = useState<{ emotion: string; date: Date }[]>(
     []
   );
   const { loading, result, error, uploadFile } = useUploadFile() as any;
+  const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,8 +39,20 @@ export default function ScreenEmotions() {
           };
 
           mediaRecorder.current.onstop = () => {
+            const survey_id = uuidv4()
             const videoBlob = new Blob(chunks, { type: "video/webm" });
-            uploadFile({ id, file: videoBlob });
+            console.log(emotions)
+            uploadFile({ survey_id: survey_id, file: videoBlob });
+            const valuedb={
+              "title":"test survey insert",
+              "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
+              "start_date":"2024-01-16 14:00:00",
+              "end_date":"2024-01-17 13:00:00",
+              "type":"recording",
+              "status":"pending",
+              "video_emotions": emotions
+          }
+          insert({...valuedb, survey_id})
             // const downloadLink = document.createElement("a");
             // downloadLink.href = URL.createObjectURL(videoBlob);
             // downloadLink.download = "captured-video.webm";

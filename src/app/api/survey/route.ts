@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { createClient } from '@supabase/supabase-js'
-import { v4 as uuidv4 } from 'uuid';
 
 
 export const GET = async (req: NextRequest) => {
@@ -14,9 +13,8 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
     const data1 = await req.json()
-    const survey_id = uuidv4()
     const created_at = new Date()
-    const newData ={...data1, survey_id, created_at}
+    const newData ={...data1, created_at}
     console.log(newData)
     const supabaseClient = createClient('https://tmilqubytvbtzbohphiq.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtaWxxdWJ5dHZidHpib2hwaGlxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNTQ0ODUzMSwiZXhwIjoyMDIxMDI0NTMxfQ.2UbzTtlIxndhVbF_97o0PF8VokDrw5ORTVVsT158-OA');
     const insertResult = await supabaseClient.from("survey").insert(newData);
