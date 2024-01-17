@@ -13,13 +13,13 @@ export const useUploadFile = create((set) => ({
   error: undefined,
   result: undefined,
 
-  uploadFile: async (payload: { survey_id: string; file: File }) => {
-    set({ loading: true });
+  uploadFile: async (payload: { id: string; file: File }) => {
     console.log('payload ',payload)
-    const { survey_id, file } = payload;
+    set({ loading: true });
+    const { id, file } = payload;
     const formData = new FormData();
 
-    formData.append("id", survey_id);
+    formData.append("id", id);
     formData.append("file", file);
 
     try {

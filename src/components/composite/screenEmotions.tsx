@@ -1,8 +1,13 @@
 import { useRef, useEffect, useState } from 'react'
-import * as faceapi from 'face-api.js'
-import { useUploadFile } from "@/lib/store";
 import { useSurvey } from "@/lib/db";
 import { v4 as uuidv4 } from 'uuid';
+import * as faceapi from "face-api.js";
+import { useUploadFile } from "@/lib/store";
+
+interface ExpressionSummary {
+  [key: string]: number;
+}
+
 export default function ScreenEmotions({ id }: { id: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,7 +47,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
             const survey_id = uuidv4()
             const videoBlob = new Blob(chunks, { type: "video/webm" });
             console.log(emotions)
-            uploadFile({ survey_id: survey_id, file: videoBlob });
+            uploadFile({ id: survey_id, file: videoBlob });
             const valuedb={
               "title":"test survey insert",
               "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
@@ -93,8 +98,8 @@ export default function ScreenEmotions({ id }: { id: string }) {
           .withFaceLandmarks()
           .withFaceExpressions();
 
-        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-          videoRef.current
+        canvasRef.current.appendChild(
+          faceapi.createCanvasFromMedia(videoRef.current)
         );
         faceapi.matchDimensions(canvasRef.current, {
           width: 900,
@@ -104,9 +109,10 @@ export default function ScreenEmotions({ id }: { id: string }) {
         const [myemotion] = detections;
         if (myemotion) {
           const { expressions } = myemotion;
+          const expressionList = expressions as any as ExpressionSummary;
           const emotionDetected = Object.keys(expressions).reduce(
             (acc, value) => {
-              return expressions[acc] > expressions[value] ? acc : value;
+              return expressionList[acc] > expressionList[value] ? acc : value;
             },
             ""
           );
