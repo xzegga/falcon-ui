@@ -1,5 +1,7 @@
 "use client";
 import Disclaimer from "@/components/composite/disclaimer";
+import Summary from "@/components/composite/summary";
+import Back from "@/components/ui/backButton";
 import React, { useEffect, useState } from "react";
 
 export default function TalkCarly() {
@@ -11,7 +13,7 @@ export default function TalkCarly() {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = "en-US";
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setRecognizedText(transcript);
       };
@@ -41,8 +43,14 @@ export default function TalkCarly() {
   }, []);
 
   return (
-    <div>
-      <Disclaimer message="This is a disclaimer - Talk to Carly" />
+    <>
+       <div className="flex items-center">
+        <Back />
+        <Disclaimer message="This is a disclaimer - Talk Carly" />
+      </div>
+      <div className="flex w-full justify-center">
+        <Summary text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+      </div>
       <div>
         <button onClick={isListening ? stopListening : startListening}>
           {isListening ? "Stop Listening" : "Start Listening"}
@@ -54,6 +62,6 @@ export default function TalkCarly() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
