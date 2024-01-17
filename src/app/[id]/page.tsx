@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import ScreenEmotions from "../../components/composite/screenEmotions";
 import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
@@ -59,6 +60,15 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       source: "live",
       created_at: `${today.getHours()}:${today.getMinutes()}`,
     },
+    {
+      id: "484f4749-e366-474f-be17-fab60d05beb0",
+      title: "By WebCam",
+      transcription:
+        "capturing from WebCam.",
+      type: "video",
+      source: "webcam",
+      created_at: `${today.getHours()}:${today.getMinutes()}`,
+    },
   ];
   const recording = recordings.find((recording) => recording.id === params.id);
 
@@ -68,8 +78,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-center gap-4 text-sm">
-              <Video className="h-6 w-6 content-center" />
-
+             <Video className="h-6 w-6 content-center" />
               <div className="grid gap-1 content-center justify-items-center">
                 <div className="font-semibold">{recording.title}</div>
               </div>
@@ -83,7 +92,6 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 </TooltipTrigger>
                 <TooltipContent>Move to trash</TooltipContent>
               </Tooltip>
-              
             </div>
             {recording?.created_at && (
               <div className="ml-auto text-xs text-muted-foreground">
@@ -93,16 +101,16 @@ export default function RecordingView({ params }: { params: { id: string } }) {
           </div>
           <Separator />
           <div className="flex p-4">
-            <video controls>
+          {recording.source==='webcam' ? <ScreenEmotions />:<video controls>
                 <source src="https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/placeholder.mp4"/>
-            </video>
+            </video>}
+            
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
             {recording?.transcription}
           </div>
           <Separator className="mt-auto" />
-          
         </div>
       ) : (
         <div className="p-8 text-center text-muted-foreground">
