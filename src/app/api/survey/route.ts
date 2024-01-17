@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/edge";
 import { RequestCookies } from "@edge-runtime/cookies";
 
@@ -9,9 +9,8 @@ export const GET = async (request: NextRequest) => {
     const supabase = createClient(cookies);
 
     const { data } = await supabase.from("survey").select();
-    return new Response("GET", {
-        status: 200
-    })
+    console.log(data[0])
+    return NextResponse.json(data);
 };
 
 export const POST = async (request: NextRequest) => {

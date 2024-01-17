@@ -14,7 +14,6 @@ export const useUploadFile = create((set) => ({
   result: undefined,
 
   uploadFile: async (payload: { id: string; file: File }) => {
-    console.log('payload ',payload)
     set({ loading: true });
     const { id, file } = payload;
     const formData = new FormData();

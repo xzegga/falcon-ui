@@ -44,20 +44,8 @@ export default function ScreenEmotions({ id }: { id: string }) {
           };
 
           mediaRecorder.current.onstop = () => {
-            const survey_id = uuidv4()
             const videoBlob = new Blob(chunks, { type: "video/webm" });
-            console.log(emotions)
-            uploadFile({ id: survey_id, file: videoBlob });
-            const valuedb={
-              "title":"test survey insert",
-              "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
-              "start_date":"2024-01-16 14:00:00",
-              "end_date":"2024-01-17 13:00:00",
-              "type":"recording",
-              "status":"pending",
-              "video_emotions": emotions
-          }
-          insert({...valuedb, survey_id})
+            uploadFile({ id, file: videoBlob });
             // const downloadLink = document.createElement("a");
             // downloadLink.href = URL.createObjectURL(videoBlob);
             // downloadLink.download = "captured-video.webm";
@@ -118,6 +106,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
           );
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
+          console.log(emotions);
           setEmotions((current) => [...current, emotionObj]);
         }
       }
@@ -128,8 +117,20 @@ export default function ScreenEmotions({ id }: { id: string }) {
     if (!recording) {
       mediaRecorder.current?.start();
       setRecording(true);
+      setEmotions([]);
     } else {
       mediaRecorder.current?.stop();
+      console.log(emotions);
+      const valuedb={
+        "title":"test survey insert",
+        "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
+        "start_date":"2024-01-16 14:00:00",
+        "end_date":"2024-01-17 13:00:00",
+        "type":"recording",
+        "status":"pending",
+        "video_emotions": emotions
+    }
+    insert({...valuedb, survey_id: id})
       setRecording(false);
     }
   };
@@ -143,6 +144,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
         {!recording ? "record" : "recording..."}
       </button>
       <p>{loading ? "uploading..." : ""}</p>
+      <p>{loadingdb ? "saving..." : ""}</p>
       <p>{error ? error.message || "hey, error" : ""}</p>
 
       <h1>Face Detection</h1>
