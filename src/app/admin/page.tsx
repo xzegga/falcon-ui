@@ -1,8 +1,8 @@
-import React from 'react'
-import { ResizableBaseLayout } from "@/components/composite/resizable-base-layout";
 
-export default function admin({children}: {children: React.ReactNode}) {
+export default function Home() {
   return (
-    <ResizableBaseLayout>{children}</ResizableBaseLayout>
+    <main className="flex min-h-screen flex-col items-center justify-between text-gray-800 p-24">
+      <p>Select a recording or add a new one</p>
+    </main>
   )
 }

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import ScreenEmotions from "../../components/composite/screenEmotions";
+import ScreenEmotions from "../../../components/composite/screenEmotions";
 import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
