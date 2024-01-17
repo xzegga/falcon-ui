@@ -22,7 +22,7 @@ export default function RootLayout({
         <Navbar />
         <div className="flex flex-col h-[calc(100vh-50px)]">
           <TooltipProvider delayDuration={0}>
-            <LandingPage />
+            {children}
           </TooltipProvider>
         </div>
       </body>
