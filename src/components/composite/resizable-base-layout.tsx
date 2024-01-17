@@ -40,6 +40,15 @@ export function ResizableBaseLayout({
       source: "live",
       created_at: `${today.getHours()}:${today.getMinutes()}`,
     },
+    {
+      id: "484f4749-e366-474f-be17-fab60d05beb0",
+      title: "By WebCam",
+      transcription:
+        "capturing from WebCam.",
+      type: "video",
+      source: "webcam",
+      created_at: `${today.getHours()}:${today.getMinutes()}`,
+    },
   ];
   return (
     <>
