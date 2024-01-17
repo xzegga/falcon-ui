@@ -11,6 +11,7 @@ import { Radio, Search } from "lucide-react";
 import { RecordingList } from "@/components/composite/recording-list";
 import { Button } from "@/components/ui/button";
 import { File } from "lucide-react";
+import Navbar from "../ui/navbar";
 
 export function ResizableBaseLayout({
   children,
@@ -41,7 +42,7 @@ export function ResizableBaseLayout({
     },
   ];
   return (
-    
+    <>
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
@@ -115,6 +116,6 @@ export function ResizableBaseLayout({
           {children}
         </ResizablePanel>
       </ResizablePanelGroup>
-
+    </>
   );
 }
