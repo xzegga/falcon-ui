@@ -20,8 +20,8 @@ export const POST = async (req: any, res: any) => {
 
   const formData = await req.formData();
   const file = formData.get("file");
+  const id = formData.get("id");
 
-  console.log(file);
   if (!file) {
     return NextResponse.json({ error: "No files received." }, { status: 400 });
   }
@@ -29,10 +29,8 @@ export const POST = async (req: any, res: any) => {
   try {
     const { data, error } = await supabase.storage
       .from(SUPABASE_CONSTANTS.NEXT_PUBLIC_STORAGE_BUCKET)
-      .upload(/**/ `recordings/_id`, file);
+      .upload(/**/ `recordings/${id}`, file);
     if (error) throw error;
-
-    console.log("data");
 
     return NextResponse.json({ Message: "Success", status: 201 });
   } catch (error) {
