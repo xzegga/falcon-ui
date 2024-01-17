@@ -63,6 +63,7 @@ const config = {
         },
         warning: {
           main: "#ffc000",
+          50: "#fefce8",
           100: "#fffbc5",
           200: "#fff885",
           300: "#ffee46",

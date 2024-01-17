@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ResizableBaseLayout } from "@/components/composite/resizable-base-layout";
+import { LandingPage } from "@/components/composite/landing-page";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/ui/navbar";
 
@@ -19,9 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={GeistSans.className}>
         <Navbar />
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col h-[calc(100vh-50px)]">
           <TooltipProvider delayDuration={0}>
-            <ResizableBaseLayout>{children}</ResizableBaseLayout>
+            <LandingPage />
           </TooltipProvider>
         </div>
       </body>
