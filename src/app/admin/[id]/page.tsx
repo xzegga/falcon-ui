@@ -78,7 +78,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-center gap-4 text-sm">
-             <Video className="h-6 w-6 content-center" />
+              <Video className="h-6 w-6 content-center" />
               <div className="grid gap-1 content-center justify-items-center">
                 <div className="font-semibold">{recording.title}</div>
               </div>
@@ -101,10 +101,13 @@ export default function RecordingView({ params }: { params: { id: string } }) {
           </div>
           <Separator />
           <div className="flex p-4">
-          {recording.source==='webcam' ? <ScreenEmotions />:<video controls>
-                <source src="https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/placeholder.mp4"/>
-            </video>}
-            
+            {recording.source === "webcam" ? (
+              <ScreenEmotions id={params.id} />
+            ) : (
+              <video controls>
+                <source src="https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/placeholder.mp4" />
+              </video>
+            )}
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
