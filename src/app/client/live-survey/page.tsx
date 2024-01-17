@@ -1,8 +1,7 @@
 "use client";
-import React from 'react'
+import Disclaimer from "@/components/composite/disclaimer";
+import React from "react";
 
-export default function LiveSurvey(){
-  return (
-    <div>Live Survey</div>
-  )
+export default function LiveSurvey() {
+  return <Disclaimer message="This is a disclaimer - Live Survey" />;
 }
