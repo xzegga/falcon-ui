@@ -1,14 +1,15 @@
-import {useRef,useEffect, useState} from 'react'
+import { useRef, useEffect, useState } from 'react'
 import * as faceapi from 'face-api.js'
 
-export default function ScreenEmotions(){
-    const videoRef = useRef<HTMLVideoElement>(null);
+export default function ScreenEmotions() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [emotions, setEmotions] = useState<{ emotion: string; date: Date }[]>([]);
 
   useEffect(() => {
     startVideo();
     videoRef.current && loadModels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startVideo = () => {
@@ -68,13 +69,13 @@ export default function ScreenEmotions(){
     console.log(emotions);
   }, [emotions]);
 
-    return (
-        <div className="myapp">
-        <h1>Face Detection</h1>
-        <div className="appvide">
-          <video crossOrigin="anonymous" ref={videoRef} autoPlay />
-        </div>
-        <canvas ref={canvasRef} width="400" height="300" className="appcanvas" />
+  return (
+    <div className="myapp">
+      <h1>Face Detection</h1>
+      <div className="appvide">
+        <video crossOrigin="anonymous" ref={videoRef} autoPlay />
       </div>
-        )
+      <canvas ref={canvasRef} width="400" height="300" className="appcanvas" />
+    </div>
+  )
 }
