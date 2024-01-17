@@ -1,7 +1,12 @@
-import {useRef,useEffect, useState} from 'react'
+import { useRef, useEffect, useState } from 'react'
 import * as faceapi from 'face-api.js'
+<<<<<<< HEAD
 import { useUploadFile } from "@/lib/store";
 export default function ScreenEmotions({ id }: { id: string }) {
+=======
+
+export default function ScreenEmotions() {
+>>>>>>> fe7e0f8decc2c9caff8e12da23d7b0db5769998f
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [emotions, setEmotions] = useState<{ emotion: string; date: Date }[]>(
@@ -13,6 +18,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   useEffect(() => {
     startVideo();
     videoRef.current && loadModels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let mediaRecorder = useRef<MediaRecorder | undefined>();

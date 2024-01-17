@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { create } from 'zustand'
+import { create } from "zustand";
 import axios from "axios";
 
 export const useGlobalStore = create((set) => ({
