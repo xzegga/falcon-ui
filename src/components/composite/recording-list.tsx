@@ -15,7 +15,7 @@ export function RecordingList({ items }: RecordingListProps) {
         <Link key={item.survey_id} href={`/admin/${item.survey_id}`}>
           <div
             className={cn(
-              "flex flex-col items-start gap-2 rounded border-white border-2 p-3 text-left text-sm transition-all hover:border-primary-main hover:border-2 w-full bg-white"
+              "flex flex-col items-start gap-2 rounded border-white border-2 p-3 text-left text-sm transition-all hover:border-primary-main hover:border-2 w-full bg-gray-50"
             )}
           >
             <div className="flex w-full flex-col gap-1">

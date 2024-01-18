@@ -10,7 +10,7 @@ export default function Charts({data}: {data: any}) {
     <div className="mb-8">
       <h1 className="text-xl text-secondary-600">Emotion Analysis</h1>
       <div>
-        <div className="bg-white my-2 p-4">
+        <div className="bg-gray-50 my-2 p-4">
           <EmotionAnalysisLabel
             message="Facial Expression Analysis"
             color="amber"
@@ -27,7 +27,7 @@ export default function Charts({data}: {data: any}) {
         </div>
       </div>
       <div>
-        <div className="bg-white my-2 p-4 ">
+        <div className="bg-gray-50 my-2 p-4 ">
           <EmotionAnalysisLabel
             message="Speech Analysis"
             color="fuchsia"
