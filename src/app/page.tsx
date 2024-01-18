@@ -12,13 +12,13 @@ export default function WelcomeLanding() {
       <h1 className="text-4xl font-bold text-sky-900 text-center">Welcome to</h1>
 
       <h2 className="text-6xl font-bold text-sky-900 text-center mb-10">Falcon AI</h2>
+      
+      <Button onClick={() => router.push(`/client/`)} >Start new Survey</Button>
 
-      <div className="flex gap-2 justify-center mb-4">
-        <div className="mr-20 w-[100px]">Powered by</div>
+      <div className="flex gap-2 justify-center pt-10 items-center">
+        <div className="w-[100px]">Powered by</div>
         <Image alt="ConcentrixCX" width={150} height={35} src="/assets/concentrixwh-head.svg" />
       </div>
-
-      <Button onClick={() => router.push(`/client/`)} >Start new Survey</Button>
     </div>
   )
 }
