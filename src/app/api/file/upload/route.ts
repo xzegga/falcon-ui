@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/edge";
 import { SUPABASE_CONSTANTS } from "@/lib/supabase/constants";
 import { NextResponse } from "next/server";
 import { RequestCookies } from "@edge-runtime/cookies";
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;//http://localhost:3000
 
 export async function POST(request: Request) {
   const cookies = new RequestCookies(request.headers);
@@ -34,7 +35,18 @@ export async function POST(request: Request) {
     const { data, error } = await supabase.storage
       .from(SUPABASE_CONSTANTS.NEXT_PUBLIC_STORAGE_BUCKET)
       .upload(`videos/${id}.${format}`, file);
+
     if (error) throw error;
+
+    if (type == "audio") {
+      fetch(`${apiBaseUrl}/api/file/process/transcript/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ folder: "videos", format: format }),
+      });
+    }
 
     return NextResponse.json({ Message: "Success", status: 201 });
   } catch (error) {
@@ -42,4 +54,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ Message: "Failed", status: 500 });
   }
 }
-
