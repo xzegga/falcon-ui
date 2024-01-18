@@ -1,9 +1,12 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from "react";
 import { useSurvey } from "@/lib/db";
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
-import 'regenerator-runtime/runtime';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import "regenerator-runtime/runtime";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { dataSetFormatter } from "@/lib/dataSetFormatter";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -19,16 +22,16 @@ export default function ScreenEmotions({ id }: { id: string }) {
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
   const [stardDate, setStartDate] = useState<Date>();
-    const {
+  const {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  // if (!browserSupportsSpeechRecognition) {
-  //   return <span>Browser doesn't support speech recognition.</span>;
-  // }
+  if (browserSupportsSpeechRecognition) {
+    // SpeechRecognition.startListening({ continuous: true })
+  }
 
   useEffect(() => {
     startVideo();
@@ -153,7 +156,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
     } else {
       videoRecorderRef.current?.stop();
       audioRecorderRef.current?.stop();
-
       const valuedb = {
         title: "test survey insert",
         agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
@@ -161,11 +163,15 @@ export default function ScreenEmotions({ id }: { id: string }) {
         end_date: new Date(),
         type: "recording",
         status: "pending",
-        video_emotions: emotions,
+        video_emotions: dataSetFormatter(emotions),
       };
       insert({ ...valuedb, survey_id: id });
       setRecording(false);
     }
+  };
+
+  const startListening = () => {
+    SpeechRecognition.startListening({ continuous: true });
   };
 
   return (
@@ -183,6 +189,15 @@ export default function ScreenEmotions({ id }: { id: string }) {
       <h1>Face Detection</h1>
       <div>
         <p>Microphone: {listening ? "on" : "off"}</p>
+        <button className="py-2 px-4 rounded" onClick={startListening}>
+          Start
+        </button>
+        <button
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.stopListening}
+        >
+          Stop
+        </button>
         <button
           className="py-2 px-4 rounded"
           onClick={() => SpeechRecognition.startListening()}
