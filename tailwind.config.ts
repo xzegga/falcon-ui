@@ -87,6 +87,7 @@ const config = {
           900: "#1d4a2b",
         },
         info: {
+          main: "#308aaa",
           50: "#f0fafb",
           100: "#d9eff4",
           200: "#b7dfea",
@@ -142,7 +143,7 @@ const config = {
     "fill-gray-scale-900",
     {
       pattern:
-        /(bg|border|text|fill)-(primary|secondary|danger|warning|success|info)-(main|600|500|50)/,
+        /(bg|border|text|fill)-(primary|secondary|danger|warning|success|info|amber|violet|rose|fuchsia)-(main|800|600|500|50)/,
       variants: ["hover", "focus", "active"],
     },
   ],
