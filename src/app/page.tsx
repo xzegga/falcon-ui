@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { set } from "date-fns";
+import Assistant from "@/components/ui/dialog";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function LandingPage() {
 
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
-
+      <Assistant showModal={showModal} setShowModal={setShowModal} />
 
       <div className="flex items-center justify-stretch">
         <div className="mr-10">
@@ -25,7 +25,7 @@ export default function LandingPage() {
         </div>
         <div className="h-[100%] flex flex-col justify-center">
           <div className="mb-[60px] text-center flex items-center justify-center">
-            <Image alt="ConcentrixCX" width={300} height={69} src="/assets/concentrixwh-head.svg" className="mx-auto -mt-20"/>
+            <Image alt="ConcentrixCX" width={300} height={69} src="/assets/concentrixwh-head.svg" className="mx-auto -mt-20" />
           </div>
           <div className="flex flex-col">
             <div className="text-base max-w-[580px]">
