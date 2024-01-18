@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
 import { useSurvey } from "@/lib/db";
-import { v4 as uuidv4 } from 'uuid';
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
 
@@ -17,6 +16,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   const { loading, result, error, uploadFile } = useUploadFile() as any;
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
+  const [stardDate, setStartDate] = useState<Date>();
 
   useEffect(() => {
     startVideo();
@@ -115,17 +115,18 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   const handleStopRecording = () => {
     if (!recording) {
+      setStartDate(new Date())
       mediaRecorder.current?.start();
       setRecording(true);
       setEmotions([]);
     } else {
       mediaRecorder.current?.stop();
-      console.log(emotions);
+
       const valuedb={
         "title":"test survey insert",
         "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
-        "start_date":"2024-01-16 14:00:00",
-        "end_date":"2024-01-17 13:00:00",
+        "start_date": stardDate,
+        "end_date": new Date(),
         "type":"recording",
         "status":"pending",
         "video_emotions": emotions
