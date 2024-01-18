@@ -88,7 +88,7 @@ export function ResizableBaseLayout({
                 </div>
               </form>
             </div>
-            <div className="mt-8 py-4 bg-slate-300 overflow-y-scroll h-[calc(100vh-300px)]">
+            <div className="mt-2 py-4 bg-slate-300 overflow-y-scroll h-[calc(100vh-230px)]">
               <RecordingList items={resultdb} />
             </div>
           </div>
