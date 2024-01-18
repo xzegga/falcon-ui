@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   try {
     const { data, error } = await supabase.storage
       .from(SUPABASE_CONSTANTS.NEXT_PUBLIC_STORAGE_BUCKET)
-      .upload(`${folder}/${id}.${format}`, file);
+      .upload(`videos/${id}.${format}`, file);
     if (error) throw error;
 
     return NextResponse.json({ Message: "Success", status: 201 });

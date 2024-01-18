@@ -57,10 +57,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
         videoRecorderRef.current.onstop = () => {
           const videoBlob = new Blob(videoChunks, { type: "video/mp4" });
           uploadFile({ id, file: videoBlob, type: "video" });
-          const downloadLink = document.createElement("a");
-          downloadLink.href = URL.createObjectURL(videoBlob);
-          downloadLink.download = "captured-video.mp4";
-          downloadLink.click();
 
           videoChunks = [];
         };
@@ -76,17 +72,13 @@ export default function ScreenEmotions({ id }: { id: string }) {
       .then((currentStream) => {
         audioRecorderRef.current = new MediaRecorder(currentStream);
 
-        audioRecorderRef.current.ondataavailable = handleVideoData;
+        audioRecorderRef.current.ondataavailable = handleAudioData;
 
         audioRecorderRef.current.onstop = () => {
-          const videoBlob = new Blob(videoChunks, { type: "audio/wav" });
-          uploadFile({ id, file: videoBlob, type: "audio" });
-          const downloadLink = document.createElement("a");
-          downloadLink.href = URL.createObjectURL(videoBlob);
-          downloadLink.download = "captured-audio.wav";
-          downloadLink.click();
+          const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+          uploadFile({ id, file: audioBlob, type: "audio" });
 
-          videoChunks = [];
+          audioChunks = [];
         };
       });
   };
