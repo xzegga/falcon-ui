@@ -1,89 +1,24 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Assistant from "@/components/ui/dialog";
 
-export default function LandingPage() {
+export default function WelcomeLanding() {
   const router = useRouter();
-  const [selected, setSelected] = React.useState<number | null>(null);
-  const [showModal, setShowModal] = React.useState(false);
-
-  const selectValue = (value: number) => {
-    setSelected(value);
-    setShowModal(true);
-  };
-
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
-      <Assistant showModal={showModal} setShowModal={setShowModal} />
+      <Image alt="ConcentrixCX" width={300} height={245} src="/assets/falcon.png" />
+      <h1 className="text-4xl font-bold text-sky-900 text-center">Welcome to</h1>
 
-      <div className="flex items-center justify-stretch">
-        <div className="mr-10">
-          <Image alt="ConcentrixCX" width={512} height={508} src="/assets/intro.png" />
-        </div>
-        <div className="h-[100%] flex flex-col justify-center">
-          <div className="mb-[60px] text-center flex items-center justify-center">
-            <Image alt="ConcentrixCX" width={300} height={69} src="/assets/concentrixwh-head.svg" className="mx-auto -mt-20" />
-          </div>
-          <div className="flex flex-col">
-            <div className="text-base max-w-[580px]">
-              <div className="pb-3">We value your feedback and would like to know how likely you are to recommend
-                our product/service to a friend or colleague. Your input is crucial in helping us improve and provide
-                you with the best possible experience.</div>
-              <div className="pb-3">Please take a moment to rate your <strong>likelihood to recommend us on a scale of 0 to 10,
-                where 0 means "Not at all likely" and 10 means "Extremely likely."</strong> Additionally, we appreciate any comments or
-                suggestions you may have to help us better understand your rating.</div>
-              <div className="pb-3">Your honest feedback is important to us and will contribute to our ongoing efforts to
-                enhance our offerings. Thank you for your time and continued support!</div>
-            </div>
-          </div>
-          <div className="mt-12 items-center justify-center flex">
-            <div>
-              {Array.from({ length: 11 }, (_, i) => i).map((i) => {
-                const ratio = i / 10;
+      <h2 className="text-6xl font-bold text-sky-900 text-center mb-10">Falcon AI</h2>
+      
+      <Button onClick={() => router.push(`/client/`)} >Start new Survey</Button>
 
-                let red, green, blue;
-
-                if (ratio <= 0.5) {
-                  // Red to yellow 
-                  red = Math.round(255);
-                  green = Math.round(255 * ratio * 2); // 0 to 255
-                  blue = 0;
-                } else {
-                  // Yellow to green
-                  red = Math.round(255 - 255 * (ratio - 0.5) * 2); // 255 to 0
-                  green = 255;
-                  blue = 0;
-                }
-
-                const opacity = 0.1; // 10% opacity
-
-                const bgcolor = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-                const color = `rgb(${red}, ${green}, ${blue})`;
-
-                return (
-                  <Button
-                    key={i}
-                    onClick={() => selectValue(i)}
-                    className={`py-2 px-[18px] rounded mr-2 border font-bold text-xs`}
-                    style={{
-                      backgroundColor: selected === i ? color : bgcolor,
-                      borderColor: color,
-                      color: selected === i ? '#fff' : i >= 4 && i <= 6 ? "#bc6e00" : color
-                    }}
-                  >
-                    {i}
-                  </Button>
-                );
-              })}
-
-            </div>
-          </div>
-        </div>
+      <div className="flex gap-2 justify-center pt-10 items-center">
+        <div className="w-[100px]">Powered by</div>
+        <Image alt="ConcentrixCX" width={150} height={35} src="/assets/concentrixwh-head.svg" />
       </div>
-
-    </div >
-  );
+    </div>
+  )
 }
