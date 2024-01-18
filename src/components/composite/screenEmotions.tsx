@@ -27,9 +27,9 @@ export default function ScreenEmotions({ id }: { id: string }) {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
-  // if (!browserSupportsSpeechRecognition) {
-  //   return <span>Browser doesn't support speech recognition.</span>;
-  // }
+  if (browserSupportsSpeechRecognition) {
+    // SpeechRecognition.startListening({ continuous: true })
+  }
 
   useEffect(() => {
     startVideo();
@@ -148,6 +148,8 @@ export default function ScreenEmotions({ id }: { id: string }) {
     }
   };
 
+  const startListening = () => {SpeechRecognition.startListening({ continuous: true })};
+
   return (
     <div className="myapp">
       <button
@@ -165,7 +167,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
         <p>Microphone: {listening ? 'on' : 'off'}</p>
         <button 
           className="py-2 px-4 rounded"
-          onClick={SpeechRecognition.startListening}>Start</button>
+          onClick={startListening}>Start</button>
         <button 
           className="py-2 px-4 rounded"
           onClick={SpeechRecognition.stopListening}>Stop</button>
