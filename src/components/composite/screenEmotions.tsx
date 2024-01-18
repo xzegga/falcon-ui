@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from 'react'
 import { useSurvey } from "@/lib/db";
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
+import 'regenerator-runtime/runtime';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -17,6 +19,16 @@ export default function ScreenEmotions({ id }: { id: string }) {
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
   const [stardDate, setStartDate] = useState<Date>();
+    const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
 
   useEffect(() => {
     startVideo();
@@ -149,6 +161,19 @@ export default function ScreenEmotions({ id }: { id: string }) {
       <p>{error ? error.message || "hey, error" : ""}</p>
 
       <h1>Face Detection</h1>
+      <div>
+        <p>Microphone: {listening ? 'on' : 'off'}</p>
+        <button 
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.startListening}>Start</button>
+        <button 
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.stopListening}>Stop</button>
+        <button
+          className="py-2 px-4 rounded"
+         onClick={resetTranscript}>Reset</button>
+        <p>{transcript}</p>
+      </div>
       <div className="appvide">
         <video crossOrigin="anonymous" ref={videoRef} autoPlay muted />
       </div>

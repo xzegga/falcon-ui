@@ -5,11 +5,11 @@ import { RequestCookies } from "@edge-runtime/cookies";
 
 export const GET = async (request: NextRequest) => {
     const cookies = new RequestCookies(request.headers);
-
+    const url = new URL(request.url)
+    const id = url.searchParams.get("id")
     const supabase = createClient(cookies);
 
-    const { data } = await supabase.from("survey").select();
-    console.log(data[0])
+    const { data } = id ? await supabase.from("survey").select().eq('survey_id',id) : await supabase.from("survey").select();
     return NextResponse.json(data);
 };
 
