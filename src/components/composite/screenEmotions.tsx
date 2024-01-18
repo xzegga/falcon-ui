@@ -4,6 +4,7 @@ import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
 import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { dataSetFormatter } from '@/lib/dataSetFormatter';
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -118,7 +119,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
           );
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
-          console.log(emotions);
           setEmotions((current) => [...current, emotionObj]);
         }
       }
@@ -133,7 +133,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
       setEmotions([]);
     } else {
       mediaRecorder.current?.stop();
-
+      dataSetFormatter(emotions)
       const valuedb={
         "title":"test survey insert",
         "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
@@ -141,9 +141,9 @@ export default function ScreenEmotions({ id }: { id: string }) {
         "end_date": new Date(),
         "type":"recording",
         "status":"pending",
-        "video_emotions": emotions
+        "video_emotions": dataSetFormatter(emotions)
     }
-    insert({...valuedb, survey_id: id})
+      insert({...valuedb, survey_id: id})
       setRecording(false);
     }
   };
