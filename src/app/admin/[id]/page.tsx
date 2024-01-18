@@ -38,55 +38,37 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from "react";
+import { useSurvey } from "@/lib/db";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
-  // Just to emulate db
-  const today = new Date();
-  const recordings = [
-    {
-      id: "c815cb17-2634-409e-9c3f-56ac1de5f222",
-      title: "Did you got the assistance you needed?",
-      transcription:
-        "Yes, I got the assistance I needed. I am very happy with the service provided by the agent. I would like to give a 5 star rating to the agent. Thank you.",
-      type: "video",
-      source: "file",
-      created_at: `${today.getHours()}:${today.getMinutes()}`,
-    },
-    {
-      id: "484f4749-e366-474f-be17-fab60d07beb9",
-      title: "Opinion on the new product",
-      transcription:
-        "I am very happy with the new product. I would like to give a 5 star rating to the agent. Thank you.",
-      type: "video",
-      source: "live",
-      created_at: `${today.getHours()}:${today.getMinutes()}`,
-    },
-    {
-      id: "484f4749-e366-474f-be17-fab60d05beb0",
-      title: "By WebCam",
-      transcription:
-        "capturing from WebCam.",
-      type: "video",
-      source: "webcam",
-      created_at: `${today.getHours()}:${today.getMinutes()}`,
-    },
-  ];
-  const recording = recordings.find((recording) => recording.id === params.id);
+  const [selectedSurvey, setSelectedSurvey] = useState<any>()
+  const { loadingdb, resultdbbyid, errordb, get } = useSurvey() as any;
+  useEffect(()=>{
+      get(params.id);
+  },[]);
+
+  useEffect(()=>{
+    if (resultdbbyid) {
+      const [survey] = resultdbbyid;
+      if (survey) setSelectedSurvey(survey)
+    }
+  },[resultdbbyid]);
 
   return (
     <div className="flex h-full flex-col">
-      {recording ? (
+      {selectedSurvey ? (
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-center gap-4 text-sm">
               <Video className="h-6 w-6 content-center" />
               <div className="grid gap-1 content-center justify-items-center">
-                <div className="font-semibold">{recording.title}</div>
+                <div className="font-semibold">{selectedSurvey.title}</div>
               </div>
               <Separator orientation="vertical" className="mx-1 h-6" />
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="icon" disabled={!recording}>
+                  <Button size="icon" disabled={!selectedSurvey}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Move to trash</span>
                   </Button>
@@ -94,25 +76,25 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 <TooltipContent>Move to trash</TooltipContent>
               </Tooltip>
             </div>
-            {recording?.created_at && (
+            {selectedSurvey?.created_at && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {recording.created_at}
+                {selectedSurvey.created_at}
               </div>
             )}
           </div>
           <Separator />
           <div className="flex p-4">
-            {recording.source === "webcam" ? (
+            {selectedSurvey.type === "webcam" ? (
               <ScreenEmotions id={uuidv4()} />
             ) : (
               <video controls>
-                <source src="https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/placeholder.mp4" />
+                <source src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${selectedSurvey.survey_id}`} />
               </video>
             )}
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-            {recording?.transcription}
+            {selectedSurvey?.status}
           </div>
           <Separator className="mt-auto" />
         </div>

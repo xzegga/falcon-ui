@@ -7,6 +7,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { dataSetFormatter } from "@/lib/dataSetFormatter";
+import { topics } from "@/lib/topics";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -27,7 +28,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
+  } = useSpeechRecognition({ commands: topics});
 
   if (browserSupportsSpeechRecognition) {
     // SpeechRecognition.startListening({ continuous: true })
