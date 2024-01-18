@@ -1,18 +1,45 @@
 import { createClient } from "@/lib/supabase/edge";
+import { SUPABASE_CONSTANTS } from "@/lib/supabase/constants";
+import { NextResponse } from "next/server";
 import { RequestCookies } from "@edge-runtime/cookies";
 
 export async function POST(request: Request) {
-    const body = await request.json();
-    let file = body.file;
-    let title = body.title;
-    if (!file) return new Response("No file", { status: 400 });
-    if (!title) return new Response("No title", { status: 400 });
-    const cookies = new RequestCookies(request.headers);
-    const supabase = createClient(cookies);
-    // Depending on the file type, we'll upload to a different folder
-    let folder = "others";
-    if (file.type.startsWith("video/")) folder = "videos";
-    if (file.type.startsWith("audio/")) folder = "audios";
-    // If the file is a video, we'll also separate the audio and video tracks
+  const cookies = new RequestCookies(request.headers);
 
+  const supabase = createClient(cookies);
+
+  const formData = await request.formData();
+  const file = formData.get("file");
+  const id = formData.get("id");
+  const type = formData.get("type");
+
+  // Depending on the file type, we'll upload to a different folder
+
+  let folder = "others";
+  let format = "wav";
+  if (type === "video") {
+    folder = "videos";
+    format = "mp4";
+  }
+  if (type === "audio") {
+    folder = "audios";
+    format = "wav";
+  }
+
+  if (!file) {
+    return NextResponse.json({ error: "No files received." }, { status: 400 });
+  }
+
+  try {
+    const { data, error } = await supabase.storage
+      .from(SUPABASE_CONSTANTS.NEXT_PUBLIC_STORAGE_BUCKET)
+      .upload(`${folder}/${id}.${format}`, file);
+    if (error) throw error;
+
+    return NextResponse.json({ Message: "Success", status: 201 });
+  } catch (error) {
+    console.log("Error occured ", error);
+    return NextResponse.json({ Message: "Failed", status: 500 });
+  }
 }
+
