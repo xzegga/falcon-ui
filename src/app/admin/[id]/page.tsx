@@ -38,30 +38,37 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSurvey } from "@/lib/db";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
-
-  const { loadingdb, resultdb: resultdbbyid, errordb, get } = useSurvey() as any;
+  const [selectedSurvey, setSelectedSurvey] = useState<any>()
+  const { loadingdb, resultdbbyid, errordb, get } = useSurvey() as any;
   useEffect(()=>{
       get(params.id);
   },[]);
 
+  useEffect(()=>{
+    if (resultdbbyid) {
+      const [survey] = resultdbbyid;
+      if (survey) setSelectedSurvey(survey)
+    }
+  },[resultdbbyid]);
+
   return (
     <div className="flex h-full flex-col">
-      {resultdbbyid ? (
+      {selectedSurvey ? (
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-center gap-4 text-sm">
               <Video className="h-6 w-6 content-center" />
               <div className="grid gap-1 content-center justify-items-center">
-                <div className="font-semibold">{resultdbbyid.title}</div>
+                <div className="font-semibold">{selectedSurvey.title}</div>
               </div>
               <Separator orientation="vertical" className="mx-1 h-6" />
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="icon" disabled={!resultdbbyid}>
+                  <Button size="icon" disabled={!selectedSurvey}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Move to trash</span>
                   </Button>
@@ -69,25 +76,25 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 <TooltipContent>Move to trash</TooltipContent>
               </Tooltip>
             </div>
-            {resultdbbyid?.created_at && (
+            {selectedSurvey?.created_at && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {resultdbbyid.created_at}
+                {selectedSurvey.created_at}
               </div>
             )}
           </div>
           <Separator />
           <div className="flex p-4">
-            {resultdbbyid.type === "webcam" ? (
+            {selectedSurvey.type === "webcam" ? (
               <ScreenEmotions id={uuidv4()} />
             ) : (
               <video controls>
-                <source src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${resultdbbyid?.survey_id}`} />
+                <source src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${selectedSurvey.survey_id}`} />
               </video>
             )}
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-            {resultdbbyid?.status}
+            {selectedSurvey?.status}
           </div>
           <Separator className="mt-auto" />
         </div>

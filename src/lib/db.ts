@@ -22,7 +22,6 @@ export const useSurvey = create((set) => ({
 
     get: async (id: string) => {
         set({ loadingdb: true });
-        console.log("here");
         try {
           const url= id ? `/api/survey?id=${id}` : "/api/survey"
           const response = await axios.get(url);
