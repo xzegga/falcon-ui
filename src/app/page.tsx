@@ -3,9 +3,17 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { set } from "date-fns";
 
 export default function LandingPage() {
   const router = useRouter();
+  const [selected, setSelected] = React.useState<number | null>(null);
+  const [showModal, setShowModal] = React.useState(false);
+
+  const selectValue = (value: number) => {
+    setSelected(value);
+    setShowModal(true);
+  };
 
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
@@ -29,19 +37,36 @@ export default function LandingPage() {
             <div>
               {Array.from({ length: 11 }, (_, i) => i).map((i) => {
                 const ratio = i / 10;
-                const red = Math.round(207 - 129 * ratio); // Adjusted red component for reverse gradient
-                const green = Math.round(45 + 121 * ratio); // Adjusted green component for reverse gradient
-                const blue = 83; // Adjusted blue component for #4EAE53
+
+                let red, green, blue;
+              
+                if (ratio <= 0.5) {
+                  // Red to yellow 
+                  red = Math.round(255); 
+                  green = Math.round(255 * ratio * 2); // 0 to 255
+                  blue = 0;
+                } else {
+                  // Yellow to green
+                  red = Math.round(255 - 255 * (ratio - 0.5) * 2); // 255 to 0
+                  green = 255; 
+                  blue = 0;
+                }
+              
                 const opacity = 0.1; // 10% opacity
+              
                 const bgcolor = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
                 const color = `rgb(${red}, ${green}, ${blue})`;
 
                 return (
                   <Button
                     key={i}
-                    onClick={() => router.push("/client/record-feedback")}
-                    className="py-2 px-[15px] rounded mr-1 border font-bold text-xl"
-                    style={{ backgroundColor: bgcolor, borderColor: color, color: color }}
+                    onClick={() => selectValue(i)}
+                    className={`py-2 px-[15px] rounded mr-2 border font-bold text-xs`}
+                    style={{
+                      backgroundColor: selected === i ? color : bgcolor, 
+                      borderColor: color, 
+                      color:  selected === i ? '#fff' : i >= 4 && i <= 6 ? "#bc6e00" : color
+                    }}
                   >
                     {i}
                   </Button>
@@ -53,6 +78,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-    </div>
+    </div >
   );
 }
