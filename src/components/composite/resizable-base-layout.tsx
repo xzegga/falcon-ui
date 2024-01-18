@@ -88,15 +88,15 @@ export function ResizableBaseLayout({
             </div>
             <Separator />
             <div className="grid grid-cols-2 gap-4 justify-center pt-4 pr-4 pl-4">
-                  <Button className="">
-                  <Radio className="mr-2 h-4 w-4" />
-                    New Live
-                  </Button>
-                  <Button className="">
-                    <File className="mr-2 h-4 w-4" />
-                    New File
-                  </Button>
-              </div>
+              <Button className="">
+                <Radio className="mr-2 h-4 w-4" />
+                New Live
+              </Button>
+              <Button className="">
+                <File className="mr-2 h-4 w-4" />
+                New File
+              </Button>
+            </div>
             <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <form>
                 <div className="relative">

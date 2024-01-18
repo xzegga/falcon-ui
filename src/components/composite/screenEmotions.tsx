@@ -1,6 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
+import { useSurvey } from "@/lib/db";
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
+import 'regenerator-runtime/runtime';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -13,7 +16,19 @@ export default function ScreenEmotions({ id }: { id: string }) {
     []
   );
   const { loading, result, error, uploadFile } = useUploadFile() as any;
+  const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
+  const [stardDate, setStartDate] = useState<Date>();
+    const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
 
   useEffect(() => {
     startVideo();
@@ -103,6 +118,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
           );
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
+          console.log(emotions);
           setEmotions((current) => [...current, emotionObj]);
         }
       }
@@ -111,10 +127,23 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   const handleStopRecording = () => {
     if (!recording) {
+      setStartDate(new Date())
       mediaRecorder.current?.start();
       setRecording(true);
+      setEmotions([]);
     } else {
       mediaRecorder.current?.stop();
+
+      const valuedb={
+        "title":"test survey insert",
+        "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
+        "start_date": stardDate,
+        "end_date": new Date(),
+        "type":"recording",
+        "status":"pending",
+        "video_emotions": emotions
+    }
+    insert({...valuedb, survey_id: id})
       setRecording(false);
     }
   };
@@ -128,9 +157,23 @@ export default function ScreenEmotions({ id }: { id: string }) {
         {!recording ? "record" : "recording..."}
       </button>
       <p>{loading ? "uploading..." : ""}</p>
+      <p>{loadingdb ? "saving..." : ""}</p>
       <p>{error ? error.message || "hey, error" : ""}</p>
 
       <h1>Face Detection</h1>
+      <div>
+        <p>Microphone: {listening ? 'on' : 'off'}</p>
+        <button 
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.startListening}>Start</button>
+        <button 
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.stopListening}>Stop</button>
+        <button
+          className="py-2 px-4 rounded"
+         onClick={resetTranscript}>Reset</button>
+        <p>{transcript}</p>
+      </div>
       <div className="appvide">
         <video crossOrigin="anonymous" ref={videoRef} autoPlay muted />
       </div>

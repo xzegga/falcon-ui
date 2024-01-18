@@ -37,6 +37,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function RecordingView({ params }: { params: { id: string } }) {
   // Just to emulate db
@@ -102,7 +103,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
           <Separator />
           <div className="flex p-4">
             {recording.source === "webcam" ? (
-              <ScreenEmotions id={params.id} />
+              <ScreenEmotions id={uuidv4()} />
             ) : (
               <video controls>
                 <source src="https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/placeholder.mp4" />
