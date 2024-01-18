@@ -5,6 +5,7 @@ export const useSurvey = create((set) => ({
     loadingdb: false,
     errordb: undefined,
     resultdb: undefined,
+    resultdbbyid: undefined,
 
     insert: async (payload: any) => {
       set({ loadingdb: true });
@@ -21,41 +22,41 @@ export const useSurvey = create((set) => ({
 
     get: async (id: string) => {
         set({ loadingdb: true });
-
+        console.log("here");
         try {
-            const url= id ? `/api/survey?id=${id}` : "/api/survey"
+          const url= id ? `/api/survey?id=${id}` : "/api/survey"
           const response = await axios.get(url);
-          set({ resultdb: response.data });
+          id ? set({ resultdbbyid: response.data }) : set({ resultdb: response.data });
           set({ loadingdb: false });
         } catch (e) {
           set({ errordb: e });
           set({ loadingdb: false });
         }
       },
-      update: async (id: string, payload: any) => {
+    update: async (id: string, payload: any) => {
         set({ loadingdb: true });
 
         try {
             const url= id ? `/api/survey?id=${id}` : "/api/survey"
-          const response = await axios.put(url, payload);
-          set({ resultdb: response.data });
-          set({ loadingdb: false });
+            const response = await axios.put(url, payload);
+            set({ resultdb: response.data });
+            set({ loadingdb: false });
         } catch (e) {
-          set({ errordb: e });
-          set({ loadingdb: false });
+            set({ errordb: e });
+            set({ loadingdb: false });
         }
-      },
-      remove: async (id: string) => {
+    },
+    remove: async (id: string) => {
         set({ loadingdb: true });
 
         try {
             const url= id ? `/api/survey?id=${id}` : "/api/survey"
-          const response = await axios.delete(url);
-          set({ resultdb: response.data });
-          set({ loadingdb: false });
+            const response = await axios.delete(url);
+            set({ resultdb: response.data });
+            set({ loadingdb: false });
         } catch (e) {
-          set({ errordb: e });
-          set({ loadingdb: false });
+            set({ errordb: e });
+            set({ loadingdb: false });
         }
-      },
+    },
   }));

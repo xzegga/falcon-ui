@@ -16,7 +16,7 @@ export function RecordingList({ items }: RecordingListProps) {
     <ScrollArea className="h-screen">
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
-          <Link key={item.id} href={`/admin/${item.id}`}>
+          <Link key={item.survey_id} href={`/admin/${item.survey_id}`}>
             <button
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent w-full"
@@ -33,17 +33,17 @@ export function RecordingList({ items }: RecordingListProps) {
                     {item.created_at}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.subject}</div>
+                <div className="text-xs font-medium">{item.title}</div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item?.transcription?.substring(0, 300)}
+                {item?.title?.substring(0, 300)}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel(item.type)}>
                   {item.type.toUpperCase()}
                 </Badge>
-                <Badge variant={getBadgeVariantFromLabel(item.source)}>
-                  {item.source.toUpperCase()}
+                <Badge variant={getBadgeVariantFromLabel(item['status'])}>
+                  {item['status'].toUpperCase()}
                 </Badge>
               </div>
             </button>
