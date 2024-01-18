@@ -17,19 +17,20 @@ export default function LandingPage() {
 
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
-      <div className="mb-15">
-        <Image alt="ConcentrixCX" width={300} height={69} src="/assets/concentrixwh-head.svg" />
-      </div>
 
-      <div className="flex">
+
+      <div className="flex items-center justify-stretch">
         <div className="mr-10">
           <Image alt="ConcentrixCX" width={512} height={508} src="/assets/intro.png" />
         </div>
         <div className="h-[100%] flex flex-col justify-center">
+          <div className="mb-[60px] text-center flex items-center justify-center">
+            <Image alt="ConcentrixCX" width={300} height={69} src="/assets/concentrixwh-head.svg" className="mx-auto -mt-20"/>
+          </div>
           <div className="flex flex-col">
             <div className="text-base max-w-[580px]">
-              <div className="pb-3">We value your feedback and would like to know how likely you are to recommend 
-                our product/service to a friend or colleague. Your input is crucial in helping us improve and provide 
+              <div className="pb-3">We value your feedback and would like to know how likely you are to recommend
+                our product/service to a friend or colleague. Your input is crucial in helping us improve and provide
                 you with the best possible experience.</div>
               <div className="pb-3">Please take a moment to rate your <strong>likelihood to recommend us on a scale of 0 to 10,
                 where 0 means "Not at all likely" and 10 means "Extremely likely."</strong> Additionally, we appreciate any comments or
@@ -38,7 +39,7 @@ export default function LandingPage() {
                 enhance our offerings. Thank you for your time and continued support!</div>
             </div>
           </div>
-          <div className="mt-8">
+          <div className="mt-12 items-center justify-center flex">
             <div>
               {Array.from({ length: 11 }, (_, i) => i).map((i) => {
                 const ratio = i / 10;
@@ -66,7 +67,7 @@ export default function LandingPage() {
                   <Button
                     key={i}
                     onClick={() => selectValue(i)}
-                    className={`py-2 px-[15px] rounded mr-2 border font-bold text-xs`}
+                    className={`py-2 px-[18px] rounded mr-2 border font-bold text-xs`}
                     style={{
                       backgroundColor: selected === i ? color : bgcolor,
                       borderColor: color,
