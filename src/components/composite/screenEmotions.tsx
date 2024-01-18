@@ -1,4 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
+import { useSurvey } from "@/lib/db";
+import { v4 as uuidv4 } from 'uuid';
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
 import 'regenerator-runtime/runtime';
@@ -15,8 +17,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
     []
   );
   const { loading, result, error, uploadFile } = useUploadFile() as any;
-
-  //Speech recognition
+  const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
     const {
     transcript,
@@ -117,6 +118,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
           );
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
+          console.log(emotions);
           setEmotions((current) => [...current, emotionObj]);
         }
       }
@@ -127,8 +129,20 @@ export default function ScreenEmotions({ id }: { id: string }) {
     if (!recording) {
       mediaRecorder.current?.start();
       setRecording(true);
+      setEmotions([]);
     } else {
       mediaRecorder.current?.stop();
+      console.log(emotions);
+      const valuedb={
+        "title":"test survey insert",
+        "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
+        "start_date":"2024-01-16 14:00:00",
+        "end_date":"2024-01-17 13:00:00",
+        "type":"recording",
+        "status":"pending",
+        "video_emotions": emotions
+    }
+    insert({...valuedb, survey_id: id})
       setRecording(false);
     }
   };
@@ -142,6 +156,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
         {!recording ? "record" : "recording..."}
       </button>
       <p>{loading ? "uploading..." : ""}</p>
+      <p>{loadingdb ? "saving..." : ""}</p>
       <p>{error ? error.message || "hey, error" : ""}</p>
 
       <h1>Face Detection</h1>
