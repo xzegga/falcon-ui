@@ -1,22 +1,54 @@
 import React from "react";
+import MessageBox from "./messageBox";
 
-export default function Verbatim({ dataObject }: { dataObject?: any }) {
-  const isAgent = dataObject?.roleType === "agent";
+const mockData = [
+  {
+    role: "agent",
+    content: "Hello, how can I help you?",
+  },
+  {
+    role: "customer",
+    content: "I have a problem with my account",
+  },
+  {
+    role: "agent",
+    content: "What seems to be the problem?",
+  },
+  {
+    role: "customer",
+    content: "I can't access my account",
+  },
+  {
+    role: "agent",
+    content: "What is your email address?",
+  },
+  {
+    role: "customer",
+    content: "asdfg@gmail.com",
+  },
+  {
+    role: "agent",
+    content: "I have sent you a password reset link",
+  },
+  {
+    role: "customer",
+    content: "Thank you",
+  },
+  {
+    role: "agent",
+    content: "You're welcome",
+  },
+];
 
-  const UserAvatar = (
-    <div className="tw-preflight tw-order-1" title="User">
-      <div
-        className={`tw-preflight tw-h-10 tw-w-10 tw-cursor-default tw-rounded-full tw-text-center tw-text-2xl tw-leading-10 ${isAgent ? "bg-primary-main text-white " : "bg-secondary-main text-primary-main"}`}
-      >
-        {isAgent ? "A" : "C"}
-      </div>
-    </div>
-  );
-
+export default function Verbatim({ data = mockData }: { data?: any }) {
   return (
     <div className="mb-8">
       <h1 className="text-xl text-secondary-600">Verbatim</h1>
-      <div className="my-2 py-3 bg-secondary-400 min-h-96 overflow-y-scroll"></div>
+      <div className="my-2 py-3 bg-gray-300 min-h-72 max-h-96 overflow-y-scroll">
+        {data.map((item: any, index: number) => (
+          <MessageBox key={index} dataObject={item} />
+        ))}
+      </div>
     </div>
   );
 }
