@@ -13,16 +13,17 @@ export const useUploadFile = create((set) => ({
   error: undefined,
   result: undefined,
 
-  uploadFile: async (payload: { id: string; file: File }) => {
+  uploadFile: async (payload: { id: string; file: File; type: string }) => {
     set({ loading: true });
-    const { id, file } = payload;
+    const { id, file, type } = payload;
     const formData = new FormData();
 
     formData.append("id", id);
     formData.append("file", file);
+    formData.append("type", type);
 
     try {
-      const response = await axios.post("/api/UploadFile", formData);
+      const response = await axios.post("/api/file/upload", formData);
       set({ result: response.data });
       set({ loading: false });
     } catch (e) {

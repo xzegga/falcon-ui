@@ -1,9 +1,12 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from "react";
 import { useSurvey } from "@/lib/db";
 import * as faceapi from "face-api.js";
 import { useUploadFile } from "@/lib/store";
-import 'regenerator-runtime/runtime';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import "regenerator-runtime/runtime";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { dataSetFormatter } from "@/lib/dataSetFormatter";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -19,25 +22,28 @@ export default function ScreenEmotions({ id }: { id: string }) {
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [recording, setRecording] = useState<boolean>(false);
   const [stardDate, setStartDate] = useState<Date>();
-    const {
+  const {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  // if (!browserSupportsSpeechRecognition) {
-  //   return <span>Browser doesn't support speech recognition.</span>;
-  // }
+  if (browserSupportsSpeechRecognition) {
+    // SpeechRecognition.startListening({ continuous: true })
+  }
 
   useEffect(() => {
     startVideo();
+    startAudio();
     videoRef.current && loadModels();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let mediaRecorder = useRef<MediaRecorder | undefined>();
-  let chunks = [] as BlobPart[];
+  let videoRecorderRef = useRef<MediaRecorder | undefined>();
+  let audioRecorderRef = useRef<MediaRecorder | undefined>();
+  let audioChunks = [] as BlobPart[];
+  let videoChunks = [] as BlobPart[];
 
   const startVideo = () => {
     navigator.mediaDevices
@@ -45,31 +51,47 @@ export default function ScreenEmotions({ id }: { id: string }) {
       .then((currentStream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = currentStream;
-          //get current stream to somehow record
-
-          mediaRecorder.current = new MediaRecorder(currentStream);
-
-          mediaRecorder.current.ondataavailable = (event) => {
-            if (event.data.size > 0) {
-              chunks.push(event.data);
-            }
-          };
-
-          mediaRecorder.current.onstop = () => {
-            const videoBlob = new Blob(chunks, { type: "video/webm" });
-            uploadFile({ id, file: videoBlob });
-            // const downloadLink = document.createElement("a");
-            // downloadLink.href = URL.createObjectURL(videoBlob);
-            // downloadLink.download = "captured-video.webm";
-            // downloadLink.click();
-
-            chunks = [];
-          };
         }
+
+        videoRecorderRef.current = new MediaRecorder(currentStream);
+
+        videoRecorderRef.current.ondataavailable = handleVideoData;
+
+        videoRecorderRef.current.onstop = () => {
+          const videoBlob = new Blob(videoChunks, { type: "video/mp4" });
+          uploadFile({ id, file: videoBlob, type: "video" });
+
+          videoChunks = [];
+        };
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const startAudio = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: false })
+      .then((currentStream) => {
+        audioRecorderRef.current = new MediaRecorder(currentStream);
+
+        audioRecorderRef.current.ondataavailable = handleAudioData;
+
+        audioRecorderRef.current.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+          uploadFile({ id, file: audioBlob, type: "audio" });
+
+          audioChunks = [];
+        };
+      });
+  };
+
+  const handleVideoData = (evt: BlobEvent) => {
+    if (evt.data.size > 0) videoChunks.push(evt.data);
+  };
+
+  const handleAudioData = (evt: BlobEvent) => {
+    if (evt.data.size > 0) audioChunks.push(evt.data);
   };
 
   const loadModels = async () => {
@@ -118,7 +140,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
           );
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
-          console.log(emotions);
           setEmotions((current) => [...current, emotionObj]);
         }
       }
@@ -127,25 +148,30 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   const handleStopRecording = () => {
     if (!recording) {
-      setStartDate(new Date())
-      mediaRecorder.current?.start();
+      setStartDate(new Date());
+      videoRecorderRef.current?.start();
+      audioRecorderRef.current?.start();
       setRecording(true);
       setEmotions([]);
     } else {
-      mediaRecorder.current?.stop();
-
-      const valuedb={
-        "title":"test survey insert",
-        "agent_id":"70250b46-de70-429f-a6d2-1d5e4d7b7611",
-        "start_date": stardDate,
-        "end_date": new Date(),
-        "type":"recording",
-        "status":"pending",
-        "video_emotions": emotions
-    }
-    insert({...valuedb, survey_id: id})
+      videoRecorderRef.current?.stop();
+      audioRecorderRef.current?.stop();
+      const valuedb = {
+        title: "test survey insert",
+        agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
+        start_date: stardDate,
+        end_date: new Date(),
+        type: "recording",
+        status: "pending",
+        video_emotions: dataSetFormatter(emotions),
+      };
+      insert({ ...valuedb, survey_id: id });
       setRecording(false);
     }
+  };
+
+  const startListening = () => {
+    SpeechRecognition.startListening({ continuous: true });
   };
 
   return (
@@ -162,16 +188,31 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
       <h1>Face Detection</h1>
       <div>
-        <p>Microphone: {listening ? 'on' : 'off'}</p>
-        <button 
-          className="py-2 px-4 rounded"
-          onClick={SpeechRecognition.startListening}>Start</button>
-        <button 
-          className="py-2 px-4 rounded"
-          onClick={SpeechRecognition.stopListening}>Stop</button>
+        <p>Microphone: {listening ? "on" : "off"}</p>
+        <button className="py-2 px-4 rounded" onClick={startListening}>
+          Start
+        </button>
         <button
           className="py-2 px-4 rounded"
-         onClick={resetTranscript}>Reset</button>
+          onClick={SpeechRecognition.stopListening}
+        >
+          Stop
+        </button>
+        <button
+          className="py-2 px-4 rounded"
+          onClick={() => SpeechRecognition.startListening()}
+        >
+          Start
+        </button>
+        <button
+          className="py-2 px-4 rounded"
+          onClick={SpeechRecognition.stopListening}
+        >
+          Stop
+        </button>
+        <button className="py-2 px-4 rounded" onClick={resetTranscript}>
+          Reset
+        </button>
         <p>{transcript}</p>
       </div>
       <div className="appvide">
