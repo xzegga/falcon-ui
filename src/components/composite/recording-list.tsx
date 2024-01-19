@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import Moment from 'react-moment';
 
 interface RecordingListProps {
   items: any[];
@@ -26,9 +27,8 @@ export function RecordingList({ items }: RecordingListProps) {
                   </div>
                 </div>
               </div>
-              <div className="text-xs">{item.title}</div>
               <div className="text-xs text-secondary-600">
-                {item.created_at}
+                <Moment format="hh:mm - DD/MM/YYYY">{item.created_at}</Moment>
               </div>
             </div>
             <div className="flex items-center mt-1 gap-2">
