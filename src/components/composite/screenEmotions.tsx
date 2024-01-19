@@ -149,7 +149,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
           setEmotions((current) => [...current, emotionObj]);
-          console.log(topicsFormat(topics).topicValues)
+          if(topics) console.log(topicsFormat(topics).topicValues)
         }
       }
     }, 1000);

@@ -1,8 +1,8 @@
 
 export function dataSetFormatter(dataset: Array<any>) {
     const [first] = dataset;
+    if(!first) return []
     const headers = Object.keys(first)
-
     const values = dataset.map((Items ) => {
         const value = []
         for (const key in Items) {
