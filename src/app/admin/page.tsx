@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
-
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between text-gray-800 p-24">
-      <p>Select a recording or add a new one</p>
+    <main className="flex min-h-screen items-center justify-center text-gray-800 p-24">
+      <p className="text-gray-400 text-2xl">Select a recording</p>
     </main>
-  )
+  );
 }
