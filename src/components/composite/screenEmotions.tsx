@@ -12,19 +12,21 @@ import { topicsKeys, topics } from "@/lib/topics";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import { NextUIProvider } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 interface ExpressionSummary {
   [key: string]: number;
 }
 
 export default function ScreenEmotions({ id }: { id: string }) {
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [emotions, setEmotions] = useState<{ emotion: string; date: Date }[]>(
     []
   );
-  const { loading, result, error, uploadFile } = useUploadFile() as any;
-  const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
+  const { loading, result, error, uploadFile, status: uploadStatus } = useUploadFile() as any;
+  const { loadingdb, resultdb, errordb, insert, status: surveyStatus } = useSurvey() as any;
   const [stardDate, setStartDate] = useState<Date>();
   const [isRecording, setIsRecording] = useState<string>('iddle');
   const {
@@ -188,12 +190,22 @@ export default function ScreenEmotions({ id }: { id: string }) {
       video_emotions: dataSetFormatter(emotions),
     };
     insert({ ...survey, survey_id: id });
+
   };
 
   const startListening = () => {
     videoRecorderRef.current?.stop();
     audioRecorderRef.current?.stop();
   };
+
+  useEffect(() => {
+    if (uploadStatus === 'success' && surveyStatus === 'success') {
+      console.log(uploadStatus, surveyStatus);
+      router.push('/client/thank-you');
+    }
+  }, [uploadStatus, surveyStatus]);
+
+  console.log(uploadStatus, surveyStatus);
 
   return (
     <NextUIProvider>
@@ -238,7 +250,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
                   <span className="text-sm font-base text-white">Loading and saving your recording, please wait...</span>
                 </div>
               ) : ""
-            };
+            }
           </div>
           <div className="relative rounded-md overflow-hidden">
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />

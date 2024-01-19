@@ -12,6 +12,7 @@ export const useUploadFile = create((set) => ({
   loading: false,
   error: undefined,
   result: undefined,
+  status: 'iddle',
 
   uploadFile: async (payload: { id: string; file: File; type: string }) => {
     set({ loading: true });
@@ -26,9 +27,11 @@ export const useUploadFile = create((set) => ({
       const response = await axios.post("/api/file/upload", formData);
       set({ result: response.data });
       set({ loading: false });
+      set({ status: 'success' })
     } catch (e) {
       set({ error: e });
       set({ loading: false });
+      set({ status: 'error' })
     }
   },
 }));

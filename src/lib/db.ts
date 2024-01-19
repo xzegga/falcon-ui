@@ -6,6 +6,7 @@ export const useSurvey = create((set) => ({
     errordb: undefined,
     resultdb: undefined,
     resultdbbyid: undefined,
+    status: 'iddle',
 
     insert: async (payload: any) => {
       set({ loadingdb: true });
@@ -14,9 +15,11 @@ export const useSurvey = create((set) => ({
         const response = await axios.post("/api/survey", payload);
         set({ resultdb: response.data });
         set({ loadingdb: false });
+        set({ status: 'success' });
       } catch (e) {
         set({ errordb: e });
         set({ loadingdb: false });
+        set({ status: 'error' });
       }
     },
 
