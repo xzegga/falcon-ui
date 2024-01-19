@@ -163,7 +163,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   const handleStartRecording = () => {
     // Start speech recognition
-    console.log('start recording');
     setIsRecording('recording');
 
     SpeechRecognition.startListening({ continuous: true });
@@ -198,10 +197,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
   return (
     <NextUIProvider>
       <div>
-
-        <p>{loading ? "uploading..." : ""}</p>
-        <p>{loadingdb ? "saving..." : ""}</p>
-        <p>{error ? error.message || "hey, error" : ""}</p>
         <div>
           <p>{transcript}</p>
         </div>
@@ -235,8 +230,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
           }
           <div>
-            {loadingdb}
-
             {
               loading ? (
                 <div
@@ -258,15 +251,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
               ) : ""}
           </div>
           <div className="relative rounded-md overflow-hidden">
-            <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" >
-              <div className="flex items-center justify-center">
-                <div
-                  className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                  role="status">
-                </div>
-                <span className="sr-only">Loading...</span>
-              </div>
-            </video>
+            <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
         </div>
