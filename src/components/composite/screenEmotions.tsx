@@ -192,6 +192,7 @@ export default function ScreenEmotions({ id, selected }: { id: string, selected:
       video_emotions: dataSetFormatter(emotions),
       score: selected,
     };
+    console.log('Topics', topics)
     insert({ ...survey, survey_id: id });
 
   };
