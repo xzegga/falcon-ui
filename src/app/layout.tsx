@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={GeistSans.className}>
-        <div className="flex flex-col h-[calc(100vh-50px)]">
+        <div className="flex flex-col h-[100vh]">
           <TooltipProvider delayDuration={0}>            
               {children}
           </TooltipProvider>
