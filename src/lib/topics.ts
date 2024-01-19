@@ -2,7 +2,8 @@
 
 const topicOptions = {
       isFuzzyMatch: true,
-      bestMatchOnly: true
+      matchInterim: true,
+      fuzzyMatchingThreshold: 0.5,
 }
 interface TopicValue {
   date: Date;
@@ -13,17 +14,17 @@ export const topics: Set<TopicValue> = new Set();
 
 export const topicsKeys = [
     {
-      command: ["Credit Card","Account","Item"],
+      command: ["/*credit card*/","/*account*/","/*item*/"],
       callback: (command: string) => {console.log(`Best matching topic for ${command}: Product`); topics.add({date:new Date(),topic:'Product'})},
       ...topicOptions,
     },
     {
-      command: ["Company","Contractor","Provider"],
+      command: ["/*company*/","/*contractor*/","/*provider*/"],
       callback: (command: string) => {console.log(`Best matching topic for ${command}: Company`); topics.add({date:new Date(),topic:'Company'})},
       ...topicOptions,
     },
     {
-      command: ["Agent","Associate","Representative"],
+      command: ["/*Agent*/","/*associate*/","/*representative*/"],
       callback: (command: string) => {console.log(`Best matching topic for ${command}: Associate`), topics.add({date:new Date(),topic:'Associate'})},
       ...topicOptions,
     },
