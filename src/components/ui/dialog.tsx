@@ -9,11 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 type AssistantType = {
     showModal: boolean,
+    selected: number | null,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Assistant(
-    { showModal, setShowModal }: AssistantType
+    { showModal, setShowModal, selected }: AssistantType
 ) {
 
     const [hasEnded, setHasEnded] = useState(true);
@@ -35,7 +36,7 @@ export default function Assistant(
                         </video>
                         <div className="mt-10">
                             <div className="flex w-full text-center">
-                                <Button onClick={() => router.push(`/client/record-feedback/${uuidv4()}`)}
+                                <Button onClick={() => router.push(`/client/record-feedback/${uuidv4()}/${selected}`)}
                                     className="mx-auto cursor-pointer" disabled={hasEnded}>
                                     <Radio className="mr-2 h-4 w-4" />
                                     {buttonText}

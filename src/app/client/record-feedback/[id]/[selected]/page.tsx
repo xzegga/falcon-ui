@@ -1,12 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Disclaimer from "@/components/composite/disclaimer";
 import ScreenEmotions from "@/components/composite/screenEmotions";
 import Image from "next/image";
 
-export default function LandingPage({ params }: { params: { id: string } }) {
+export default function LandingPage({ params }: { params: { id: string, selected: number } }) {
+    console.log(params.selected);
+    
     const router = useRouter();
     return (
         <>
