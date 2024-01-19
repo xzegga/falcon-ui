@@ -53,7 +53,7 @@ export function RecordingList({ items }: RecordingListProps) {
                 variant={"outline"}
                 onClick={deleteSurvey(item.survey_id)}
                 size={"sm"}
-                className="rounded-sm bg-transparent text-red-600 border-red-600 border-2 hover:bg-red-600 hover:text-white"
+                className="rounded-sm bg-transparent text-red-600 border-none hover:text-red-600 hover:bg-gray-200"
               >
                 <TrashIcon className="w-6 h-6" />
               </Button>
