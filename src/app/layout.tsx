@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Navbar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
   title: "Falcon Ai",
@@ -18,8 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={GeistSans.className}>
         <div className="flex flex-col h-[calc(100vh-50px)]">
-          <TooltipProvider delayDuration={0}>
-            {children}
+          <TooltipProvider delayDuration={0}>            
+              {children}
           </TooltipProvider>
         </div>
       </body>

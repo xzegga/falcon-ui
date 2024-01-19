@@ -1,3 +1,4 @@
+"use client";
 import { useRef, useEffect, useState } from "react";
 import { useSurvey } from "@/lib/db";
 import * as faceapi from "face-api.js";
@@ -8,6 +9,9 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { dataSetFormatter } from "@/lib/dataSetFormatter";
 import { topicsKeys, topics } from "@/lib/topics";
+import { Spinner } from "@nextui-org/react";
+import Image from "next/image";
+import { NextUIProvider } from "@nextui-org/react";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -22,6 +26,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   const { loading, result, error, uploadFile } = useUploadFile() as any;
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
   const [stardDate, setStartDate] = useState<Date>();
+  const [isRecording, setIsRecording] = useState<string>('iddle');
   const {
     transcript,
     listening,
@@ -158,14 +163,20 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   const handleStartRecording = () => {
     // Start speech recognition
+    console.log('start recording');
+    setIsRecording('recording');
+
     SpeechRecognition.startListening({ continuous: true });
     setStartDate(new Date());
     recordingStart();
   }
 
   const handleStopRecording = () => {
-    recordingStop();
+
+    setIsRecording('stopped');
     SpeechRecognition.stopListening();
+    recordingStop();
+
     const survey = {
       title: "Test Survey",
       agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
@@ -185,33 +196,82 @@ export default function ScreenEmotions({ id }: { id: string }) {
   };
 
   return (
-    <div>
-{/*       <button
-        className="border-full p-1 border-red-900 bg-red-800"
-        onClick={handleStartRecording}
-      >
-        Record
-      </button>
-      <button
-        className="border-full p-1 border-red-900 bg-red-800"
-        onClick={handleStopRecording}
-      >
-        Stop Recording
-      </button>
-      <p>{loading ? "uploading..." : ""}</p>
-      <p>{loadingdb ? "saving..." : ""}</p>
-      <p>{error ? error.message || "hey, error" : ""}</p>
-
+    <NextUIProvider>
       <div>
-        <p>{transcript}</p>
-      </div> */}
-      <div className="bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
-        <div className="relative rounded-md overflow-hidden">
-          <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="" />
-          <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute" />
-        </div>
-      </div>
 
-    </div>
+        <p>{loading ? "uploading..." : ""}</p>
+        <p>{loadingdb ? "saving..." : ""}</p>
+        <p>{error ? error.message || "hey, error" : ""}</p>
+        <div>
+          <p>{transcript}</p>
+        </div>
+        <div className="relative bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
+          {videoRef.current && canvasRef.current && (
+            <div className="z-20 absolute bottom-4 left-1/2 transform -translate-x-1/2">
+
+              {isRecording === 'iddle' ? (
+
+                <button
+                  onClick={() => handleStartRecording()}
+                  className="bg-red-500 text-white font-semibold py-2 px-4 rounded-full flex 
+              items-center hover:bg-red-600" >
+                  <Image src="/assets/start.svg" width={20} height={20} alt="Start Recording" className="w-6 h-6 mr-2" />
+                  <span>Start Recording</span>
+                </button>
+
+              ) : isRecording === 'recording' ? (
+
+                <button
+                  onClick={handleStopRecording}
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded-full flex items-center hover:bg-red-600">
+                  <Image src="/assets/stop.svg" width={20} height={20} alt="Stop Recording" className="w-6 h-6 mr-2" />
+                  <span>Stop Recording</span>
+                </button>
+
+              ) : null}
+
+
+            </div>)
+
+          }
+          <div>
+            {loadingdb}
+
+            {
+              loading ? (
+                <div
+                  className="w-full bg-[#FAA71C] flex gap-2 p-2 items-center space-x-2p-2
+                        absolute z-20 box-border border-4 border-t-0 border-b-0 border-[#FAA71C] bottom-1">
+                  <Spinner color="white" size="sm" />
+                  <span className="text-sm font-base text-white">Loading file, please wait...</span>
+                </div>
+              ) : ""}
+
+            {
+              loadingdb ? (
+                <div
+                  className="w-full bg-bg-yellow-500 flex gap-2 p-2 items-center space-x-2p-2
+                        absolute z-20 box-border border-4 border-t-0 border-b-0 border-[#FAA71C] bottom-1">
+                  <Spinner color="white" size="sm" />
+                  <span className="text-sm font-base text-white">Saving...</span>
+                </div>
+              ) : ""}
+          </div>
+          <div className="relative rounded-md overflow-hidden">
+            <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" >
+              <div className="flex items-center justify-center">
+                <div
+                  className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                  role="status">
+                </div>
+                <span className="sr-only">Loading...</span>
+              </div>
+            </video>
+            <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
+          </div>
+        </div>
+
+      </div >
+    </NextUIProvider>
   );
 }
