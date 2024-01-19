@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Disclaimer() {
   return (
-    <div className="p-6  my-2 mx-4 text-sm w-[450px] rounded-lg bg-blue-100">
+    <div className="p-6 my-2 mb-0 mx-4 text-sm w-[450px] rounded-lg bg-gray-100/80">
       <div className="flex mb-4">
         <AlertTriangle className="mr-2 text-orange-300" />
         <h2 className="text-2xl text-orange-300">Disclaimer</h2>

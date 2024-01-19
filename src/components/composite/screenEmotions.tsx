@@ -146,12 +146,12 @@ export default function ScreenEmotions({ id }: { id: string }) {
     }, 1000);
   };
 
-  const recordingStart = ()=>{
+  const recordingStart = () => {
     videoRecorderRef.current?.start();
     audioRecorderRef.current?.start();
   }
 
-  const recordingStop = ()=>{
+  const recordingStop = () => {
     videoRecorderRef.current?.stop();
     audioRecorderRef.current?.stop();
   }
@@ -184,7 +184,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   };
 
   return (
-    <div className="myapp">
+    <div>
       <button
         className="border-full p-1 border-red-900 bg-red-800"
         onClick={handleStartRecording}
@@ -204,11 +204,13 @@ export default function ScreenEmotions({ id }: { id: string }) {
       <div>
         <p>{transcript}</p>
       </div>
-      <div className="relative">
-        <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="" />
-        <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute" />
+      <div className="bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
+        <div className="relative rounded-md overflow-hidden">
+          <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="" />
+          <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute" />
+        </div>
       </div>
-      
+
     </div>
   );
 }
