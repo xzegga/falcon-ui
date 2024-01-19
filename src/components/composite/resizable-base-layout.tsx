@@ -64,21 +64,7 @@ export function ResizableBaseLayout({
           <div className="w-1/4">
             <div className="flex justify-between items-center px-4 py-2 border-b border-gray-500">
               <h2 className="text-xl text-secondary-600">Recordings</h2>
-              <div className="flex gap-1">
-                <Button variant={"link"}>All</Button>
-                <Button variant={"link"}>Live</Button>
-                <Button variant={"link"}>File</Button>
-              </div>
-            </div>
-            <div className="px-4 py-2 flex gap-2">
-              <Button className="rounded w-1/2">
-                <Radio className="mr-2 h-4 w-4" />
-                New Live
-              </Button>
-              <Button className="rounded w-1/2">
-                <File className="mr-2 h-4 w-4" />
-                New File
-              </Button>
+
             </div>
             <div className="px-4 py-2">
               <form className="w-full">
