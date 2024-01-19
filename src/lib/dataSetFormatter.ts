@@ -3,7 +3,7 @@ export function dataSetFormatter(dataset: Array<any>) {
     const [first] = dataset;
     if (first) {
       const headers = Object.keys(first);
-      const values = dataset.map((item: any) => [item.emotion, item.value]);
+      const values = dataset.map((item: any) => [item.emotion, item.date]);
       return [headers, ...values];
     }
   }
