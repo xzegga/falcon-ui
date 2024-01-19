@@ -69,7 +69,7 @@ export function ResizableBaseLayout({
               <RecordingList items={resultdb} />
             </div>
           </div>
-          <div className="w-3/4">{children}</div>
+          <div className="w-3/4 bg-gray-200">{children}</div>
         </div>
       )}
     </>
