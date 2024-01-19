@@ -183,7 +183,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
       end_date: new Date(),
       type: "recording",
       status: "pending",
-      topics: topics,
+      // topics: topics,
       video_emotions: dataSetFormatter(emotions),
     };
     insert({ ...survey, survey_id: id });
@@ -197,9 +197,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   return (
     <NextUIProvider>
       <div>
-        <div>
-          <p>{transcript}</p>
-        </div>
+        
         <div className="relative bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
           {videoRef.current && canvasRef.current && (
             <div className="z-20 absolute bottom-4 left-1/2 transform -translate-x-1/2">
@@ -254,6 +252,9 @@ export default function ScreenEmotions({ id }: { id: string }) {
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
+          <div>
+          <p>{transcript}</p>
+        </div>
         </div>
 
       </div >

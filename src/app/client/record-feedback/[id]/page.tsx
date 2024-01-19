@@ -12,14 +12,14 @@ export default function LandingPage({ params }: { params: { id: string } }) {
         <>
             <Image alt="ConcentrixCX" width={300} height={69}
                 src="/assets/concentrixwh-head.svg"
-                className="mx-auto mt-20" />
+                className="mx-auto mt-10" />
             <div className="h-[100%] flex flex-col justify-center items-center">
-                <div className="flex items-center justify-stretch pt-20 bg-[url('/assets/careers-group.png')] 
+                <div className="flex items-start justify-stretch bg-[url('/assets/careers-group.png')] 
                 bg-no-repeat bg-contain bg-right pr-30 gap-5">
                     <div className="mr-10 flex-auto">
                         <Disclaimer />
                     </div>
-                    <div className="h-[450px] w-[550px] flex flex-col justify-end items-end">
+                    <div className="h-[450px] w-[550px] mt-2 flex flex-col justify-end items-end">
                         <div className="text-base max-w-[600px]">
                             <ScreenEmotions id={params.id} />
                         </div>
