@@ -7,7 +7,7 @@ import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { dataSetFormatter, topicsFormat } from "@/lib/dataSetFormatter";
+import { dataSetFormatter, topicsFormat, correlationTopicEmotion } from "@/lib/dataSetFormatter";
 import { topicsKeys, topics } from "@/lib/topics";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
@@ -179,7 +179,7 @@ export default function ScreenEmotions({ id, selected }: { id: string, selected:
     setIsRecording('stopped');
     SpeechRecognition.stopListening();
     recordingStop();
-
+    if(topics) correlationTopicEmotion(topics, emotions)
     const survey = {
       title: "Test Survey",
       agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
@@ -188,6 +188,7 @@ export default function ScreenEmotions({ id, selected }: { id: string, selected:
       type: "recording",
       status: "pending",
       topics: topicsFormat(topics).topicDataSet,
+      correlation: topics ? correlationTopicEmotion(topics, emotions) : [],
       video_emotions: dataSetFormatter(emotions),
       score: selected,
     };

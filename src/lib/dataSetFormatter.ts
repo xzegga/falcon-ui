@@ -43,3 +43,20 @@ export function topicsFormat(topics: any){
       topicValues: topicValues
     }
   }
+
+  export function correlationTopicEmotion(topics: any, emotions: any){
+    if(topics){
+        const topicData=topicsFormat(topics).topicValues
+        const correlationEmotions = topicData.map((item: any) => {
+            const emotionsTopic = emotions.filter((emotion: any) => {
+                return (new Date(emotion.date).getTime() - 5000) <= (new Date(item.date).getTime()) && (new Date(emotion.date).getTime() + 5000) > (new Date(item.date).getTime());
+            });
+            return {
+             topic: item.topic,
+             date: item.date,
+             emotions: emotionsTopic
+            }
+        });
+       return correlationEmotions
+    }
+  }
