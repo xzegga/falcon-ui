@@ -30,7 +30,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   } = useSpeechRecognition({ commands: topics });
 
   if (browserSupportsSpeechRecognition) {
-    // SpeechRecognition.startListening({ continuous: true })
+    SpeechRecognition.startListening({ continuous: true })
   }
 
   useEffect(() => {
@@ -185,7 +185,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
   return (
     <div>
-      <button
+{/*       <button
         className="border-full p-1 border-red-900 bg-red-800"
         onClick={handleStartRecording}
       >
@@ -203,7 +203,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
       <div>
         <p>{transcript}</p>
-      </div>
+      </div> */}
       <div className="bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
         <div className="relative rounded-md overflow-hidden">
           <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="" />
