@@ -8,6 +8,7 @@ import { useSurvey } from "@/lib/db";
 import { Button } from "../ui/button";
 import { TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import GaugeChart from "./gaugeChart";
 interface RecordingListProps {
   items: any[];
 }
@@ -33,30 +34,30 @@ export function RecordingList({ items }: RecordingListProps) {
           >
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="text-primary-main text-lg font-semibold">
-                    {item.title}
+                <div className="flex flex-row w-full items-center justify-between">
+                  <div className="flex flex-row gap-2 items-center">
+                    <span className="text-primary-main text-lg font-semibold">
+                      {item.title}
+                    </span>
+                    <div className="text-xs text-secondary-600">
+                      <Moment format="hh:mm - DD/MM/YYYY">
+                        {item.created_at}
+                      </Moment>
+                    </div>
                   </div>
+                  <TrashIcon
+                    className="w-5 h-5 stroke-red-600 hover:stroke-red-700"
+                    onClick={deleteSurvey(item.survey_id)}
+                  />
                 </div>
-              </div>
-              <div className="text-xs text-secondary-600">
-                <Moment format="hh:mm - DD/MM/YYYY">{item.created_at}</Moment>
               </div>
             </div>
             <div className="flex justify-between w-full wrap items-start">
-              <div className="flex items-center mt-1 gap-2">
+              <div className="flex items-center w-full mt-1 justify-between gap-2">
                 <Badge variant={getBadgeVariantFromLabel(item["status"])}>
                   {item["status"].toUpperCase()}
                 </Badge>
               </div>
-              <Button
-                variant={"outline"}
-                onClick={deleteSurvey(item.survey_id)}
-                size={"sm"}
-                className="rounded-sm bg-transparent text-red-600 border-none hover:text-red-600 hover:bg-gray-200"
-              >
-                <TrashIcon className="w-6 h-6" />
-              </Button>
             </div>
           </div>
         </Link>

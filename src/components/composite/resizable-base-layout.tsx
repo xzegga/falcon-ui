@@ -18,7 +18,7 @@ export function ResizableBaseLayout({
   return (
     <>
       {resultdb && (
-        <div className="flex flex-row">
+        <div className="flex flex-row mt-14">
           <div className="w-1/4">
             <div className="flex justify-between items-center px-4 py-2">
               <h2 className="text-xl text-secondary-600">Recordings</h2>

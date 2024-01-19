@@ -16,7 +16,7 @@ export default function RootLayout({
     return (
         <>
             <Navbar />
-            <div className="flex flex-col h-[calc(100vh-50px)]">
+            <div className="flex flex-col h-[calc(100vh-50px)] mt-14">
                 {children}
             </div>
         </>

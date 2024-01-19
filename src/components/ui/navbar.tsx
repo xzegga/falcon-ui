@@ -7,7 +7,7 @@ export default function Navba(){
   const router = useRouter();
   return (
     <nav
-      className="preflight relative flex h-12 w-full items-center gap-2 bg-gray-500 px-2 text-white cursor-pointer"
+      className="fixed preflight z-40 flex h-12 w-full items-center gap-2 bg-gray-500 px-2 text-white cursor-pointer"
       data-te-navbar-ref
       onClick={() => router.push("/")}
     >

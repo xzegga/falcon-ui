@@ -8,6 +8,7 @@ import Charts from "@/components/composite/charts";
 import Verbatim from "@/components/composite/verbatim";
 import { mockDataLineChart, mockDataPieChart } from "@/lib/constants/mockData";
 import { createClient } from "@/lib/supabase/client";
+import GaugeChart from "@/components/composite/gaugeChart";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
   const { loadingdb, resultdbbyid, errordb, get } = useSurvey() as any;
@@ -40,18 +41,32 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       {selectedSurvey && (
         <div className="">
           <div className="flex flex-row">
-            <div className="w-1/2 m-2 mt-8">
+            <div className="w-1/2 m-2 mt-8 relative">
               {selectedSurvey.type === "webcam" ? (
                 <ScreenEmotions id={uuidv4()} />
               ) : (
-                <video controls>
+                <video className="w-full h-full" controls>
                   <source src={url} />
                 </video>
               )}
+              <div className="absolute top-8 right-6">
+                <GaugeChart value={selectedSurvey.score} />
+                <h1 className="text-white -mt-3 text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                  Score
+                </h1>
+              </div>
             </div>
-            {selectedSurvey.analysis && <div className="w-1/2 m-2 mt-8">
-              <Summary text={selectedSurvey.analysis.content} />
-            </div>}
+            <div className="w-1/2 m-2 mt-8">
+              {/* <div className="">
+                <h1 className="text-xl text-secondary-600 mb-2">Score</h1>
+                
+              </div> */}
+              {selectedSurvey.analysis && (
+                <div className="">
+                  <Summary text={selectedSurvey.analysis.content} />
+                </div>
+              )}
+            </div>
           </div>
           <div className="m-2">
             <Charts
