@@ -40,7 +40,7 @@ const mockData = [
   },
 ];
 
-export default function Verbatim({ data = mockData }: { data?: any }) {
+export default function Verbatim({ data }: { data: any }) {
   return (
     <div className="mb-8">
       <h1 className="text-xl text-secondary-600">Verbatim</h1>

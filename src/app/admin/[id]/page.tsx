@@ -10,33 +10,30 @@ import { mockDataLineChart, mockDataPieChart } from "@/lib/constants/mockData";
 import { createClient } from "@/lib/supabase/client";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
-  const {
-    loadingdb,
-    resultdbbyid,
-    errordb,
-    get,
-  } = useSurvey() as any;
+  const { loadingdb, resultdbbyid, errordb, get } = useSurvey() as any;
 
-  const [ url, setUrl ] = useState<string>()
-  const [selectedSurvey, setSelectedSurvey] = useState<any>()
-  const superbase = createClient()
+  const [url, setUrl] = useState<string>();
+  const [selectedSurvey, setSelectedSurvey] = useState<any>();
+  const superbase = createClient();
 
-  useEffect(()=>{
-      get(params.id);
-      const file = superbase.storage.from("recordings").getPublicUrl(`videos/${params.id}.mp4`)
-      setUrl(file.data.publicUrl);
-  },[]);
+  useEffect(() => {
+    get(params.id);
+    const file = superbase.storage
+      .from("recordings")
+      .getPublicUrl(`videos/${params.id}.mp4`);
+    setUrl(file.data.publicUrl);
+  }, []);
 
   useEffect(() => {
     get(params.id);
   }, []);
 
   useEffect(() => {
-    if(resultdbbyid){
-      const [survey]=resultdbbyid
-      setSelectedSurvey(survey)
+    if (resultdbbyid) {
+      const [survey] = resultdbbyid;
+      setSelectedSurvey(survey);
     }
-
+    console.log(selectedSurvey);
   }, [resultdbbyid]);
 
   return (
@@ -49,9 +46,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 <ScreenEmotions id={uuidv4()} />
               ) : (
                 <video controls>
-                  <source
-                    src={url}
-                  />
+                  <source src={url} />
                 </video>
               )}
             </div>
@@ -66,7 +61,9 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 speechData: selectedSurvey?.video_emotions,
               }}
             />
-            <Verbatim />
+            {selectedSurvey.transcript && (
+              <Verbatim data={selectedSurvey.transcript} />
+            )}
           </div>
         </div>
       )}
