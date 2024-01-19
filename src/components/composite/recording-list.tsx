@@ -7,7 +7,7 @@ import Moment from "react-moment";
 import { useSurvey } from "@/lib/db";
 import { Button } from "../ui/button";
 import { TrashIcon } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 interface RecordingListProps {
   items: any[];
 }
@@ -43,19 +43,19 @@ export function RecordingList({ items }: RecordingListProps) {
                 <Moment format="hh:mm - DD/MM/YYYY">{item.created_at}</Moment>
               </div>
             </div>
-            <div className="flex justify-between w-full wrap">
+            <div className="flex justify-between w-full wrap items-start">
               <div className="flex items-center mt-1 gap-2">
                 <Badge variant={getBadgeVariantFromLabel(item["status"])}>
                   {item["status"].toUpperCase()}
                 </Badge>
               </div>
               <Button
+                variant={"outline"}
                 onClick={deleteSurvey(item.survey_id)}
                 size={"sm"}
-                variant="danger"
-                className="rounded-sm"
+                className="rounded-sm bg-transparent text-red-600 border-red-600 border-2 hover:bg-red-600 hover:text-white"
               >
-                <TrashIcon />
+                <TrashIcon className="w-6 h-6" />
               </Button>
             </div>
           </div>
