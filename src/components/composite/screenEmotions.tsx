@@ -7,7 +7,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { dataSetFormatter } from "@/lib/dataSetFormatter";
-import { topics } from "@/lib/topics";
+import { topicsKeys, topics } from "@/lib/topics";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -21,17 +21,16 @@ export default function ScreenEmotions({ id }: { id: string }) {
   );
   const { loading, result, error, uploadFile } = useUploadFile() as any;
   const { loadingdb, resultdb, errordb, insert } = useSurvey() as any;
-  const [recording, setRecording] = useState<boolean>(false);
   const [stardDate, setStartDate] = useState<Date>();
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
-  } = useSpeechRecognition({ commands: topics});
+  } = useSpeechRecognition({ commands: topicsKeys });
 
   if (browserSupportsSpeechRecognition) {
-    // SpeechRecognition.startListening({ continuous: true })
+    SpeechRecognition.startListening({ continuous: true })
   }
 
   useEffect(() => {
@@ -147,79 +146,72 @@ export default function ScreenEmotions({ id }: { id: string }) {
     }, 1000);
   };
 
+  const recordingStart = () => {
+    videoRecorderRef.current?.start();
+    audioRecorderRef.current?.start();
+  }
+
+  const recordingStop = () => {
+    videoRecorderRef.current?.stop();
+    audioRecorderRef.current?.stop();
+  }
+
+  const handleStartRecording = () => {
+    // Start speech recognition
+    SpeechRecognition.startListening({ continuous: true });
+    setStartDate(new Date());
+    recordingStart();
+  }
+
   const handleStopRecording = () => {
-    if (!recording) {
-      setStartDate(new Date());
-      videoRecorderRef.current?.start();
-      audioRecorderRef.current?.start();
-      setRecording(true);
-      setEmotions([]);
-    } else {
-      videoRecorderRef.current?.stop();
-      audioRecorderRef.current?.stop();
-      const valuedb = {
-        title: "test survey insert",
-        agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
-        start_date: stardDate,
-        end_date: new Date(),
-        type: "recording",
-        status: "pending",
-        video_emotions: dataSetFormatter(emotions),
-      };
-      insert({ ...valuedb, survey_id: id });
-      setRecording(false);
-    }
+    recordingStop();
+    SpeechRecognition.stopListening();
+    const survey = {
+      title: "Test Survey",
+      agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",
+      start_date: stardDate,
+      end_date: new Date(),
+      type: "recording",
+      status: "pending",
+      topics: topics,
+      video_emotions: dataSetFormatter(emotions),
+    };
+    insert({ ...survey, survey_id: id });
   };
 
   const startListening = () => {
-    SpeechRecognition.startListening({ continuous: true });
+    videoRecorderRef.current?.stop();
+    audioRecorderRef.current?.stop();
   };
 
   return (
-    <div className="myapp">
+    <div>
+{/*       <button
+        className="border-full p-1 border-red-900 bg-red-800"
+        onClick={handleStartRecording}
+      >
+        Record
+      </button>
       <button
         className="border-full p-1 border-red-900 bg-red-800"
         onClick={handleStopRecording}
       >
-        {!recording ? "record" : "recording..."}
+        Stop Recording
       </button>
       <p>{loading ? "uploading..." : ""}</p>
       <p>{loadingdb ? "saving..." : ""}</p>
       <p>{error ? error.message || "hey, error" : ""}</p>
 
-      <h1>Face Detection</h1>
       <div>
-        <p>Microphone: {listening ? "on" : "off"}</p>
-        <button className="py-2 px-4 rounded" onClick={startListening}>
-          Start
-        </button>
-        <button
-          className="py-2 px-4 rounded"
-          onClick={SpeechRecognition.stopListening}
-        >
-          Stop
-        </button>
-        <button
-          className="py-2 px-4 rounded"
-          onClick={() => SpeechRecognition.startListening()}
-        >
-          Start
-        </button>
-        <button
-          className="py-2 px-4 rounded"
-          onClick={SpeechRecognition.stopListening}
-        >
-          Stop
-        </button>
-        <button className="py-2 px-4 rounded" onClick={resetTranscript}>
-          Reset
-        </button>
         <p>{transcript}</p>
+      </div> */}
+      <div className="bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
+        <div className="relative rounded-md overflow-hidden">
+          <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="" />
+          <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute" />
+        </div>
       </div>
-      <div className="appvide">
-        <video crossOrigin="anonymous" ref={videoRef} autoPlay muted />
-      </div>
-      <canvas ref={canvasRef} width="400" height="300" className="appcanvas" />
+
     </div>
   );
 }

@@ -11,15 +11,14 @@ export default function LandingPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     return (
         <div className="h-[100%] flex flex-col justify-center items-center">
-            <div className="flex items-center justify-stretch pt-20">
-                <div className="mr-10">
+            <div className="flex items-center justify-stretch pt-20 bg-[url('/assets/careers-group.png')] 
+                bg-no-repeat bg-contain bg-right pr-30 gap-5">
+                <div className="mr-10 flex-auto">
                     <Disclaimer />
                 </div>
-                <div className="h-[100%] flex flex-col justify-center">
-                    <div className="flex flex-col">
-                        <div className="text-base max-w-[580px]">
-                            <ScreenEmotions id={params.id} />
-                        </div>
+                <div className="h-[450px] w-[550px] flex flex-col justify-end items-end">
+                    <div className="text-base max-w-[600px]">
+                        <ScreenEmotions id={params.id} />
                     </div>
                 </div>
             </div>
