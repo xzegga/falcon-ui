@@ -18,7 +18,7 @@ export default function MessageBox({ dataObject }: { dataObject?: any }) {
   );
 
   const agentBubble =
-    "bg-gray-100 rounded-ss-none";
+    "bg-gray-200 rounded-ss-none";
 
   const customerBubble =
     "bg-slate-200 rounded-se-none";

@@ -44,7 +44,7 @@ export default function Verbatim({ data = mockData }: { data?: any }) {
   return (
     <div className="mb-8">
       <h1 className="text-xl text-secondary-600">Verbatim</h1>
-      <div className="my-2 py-3 bg-gray-300 min-h-72 max-h-96 overflow-y-scroll">
+      <div className="my-2 py-3 bg-gray-50 min-h-72 max-h-96 overflow-y-scroll">
         {data.map((item: any, index: number) => (
           <MessageBox key={index} dataObject={item} />
         ))}

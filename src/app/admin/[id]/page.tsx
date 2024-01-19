@@ -1,108 +1,64 @@
 "use client";
-import {
-  Archive,
-  ArchiveX,
-  Clock,
-  Forward,
-  MoreVertical,
-  Reply,
-  ReplyAll,
-  Trash2,
-  Video,
-} from "lucide-react";
-
-import {
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import ScreenEmotions from "../../../components/composite/screenEmotions";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 import { useSurvey } from "@/lib/db";
+import Summary from "@/components/composite/summary";
+import Charts from "@/components/composite/charts";
+import Verbatim from "@/components/composite/verbatim";
+import { mockDataLineChart, mockDataPieChart } from "@/lib/constants/mockData";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
-  const [selectedSurvey, setSelectedSurvey] = useState<any>()
-  const { loadingdb, resultdbbyid, errordb, get } = useSurvey() as any;
-  useEffect(()=>{
-      get(params.id);
-  },[]);
+  const {
+    loadingdb,
+    resultdb: resultdbbyid,
+    errordb,
+    get,
+  } = useSurvey() as any;
 
-  useEffect(()=>{
-    if (resultdbbyid) {
-      const [survey] = resultdbbyid;
-      if (survey) setSelectedSurvey(survey)
-    }
-  },[resultdbbyid]);
+  useEffect(() => {
+    get(params.id);
+  }, []);
+
+  const { video_emotions: videoEmotions } = resultdbbyid?.find(
+    (recording: any) => recording.survey_id === params.id || {}
+  );
+
+  useEffect(() => {
+    console.log({ resultdbbyid, id: params.id });
+  }, [resultdbbyid]);
 
   return (
-    <div className="flex h-full flex-col">
-      {selectedSurvey ? (
-        <div className="flex flex-1 flex-col">
-          <div className="flex items-start p-4">
-            <div className="flex items-center gap-4 text-sm">
-              <Video className="h-6 w-6 content-center" />
-              <div className="grid gap-1 content-center justify-items-center">
-                <div className="font-semibold">{selectedSurvey.title}</div>
-              </div>
-              <Separator orientation="vertical" className="mx-1 h-6" />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" disabled={!selectedSurvey}>
-                    <Trash2 className="h-4 w-4" />
-                    <span className="sr-only">Move to trash</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Move to trash</TooltipContent>
-              </Tooltip>
+    <>
+      {resultdbbyid && (
+        <div className="">
+          <div className="flex flex-row">
+            <div className="w-1/2 m-2 mt-8">
+              {resultdbbyid.type === "webcam" ? (
+                <ScreenEmotions id={uuidv4()} />
+              ) : (
+                <video controls>
+                  <source
+                    src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${resultdbbyid?.survey_id}`}
+                  />
+                </video>
+              )}
             </div>
-            {selectedSurvey?.created_at && (
-              <div className="ml-auto text-xs text-muted-foreground">
-                {selectedSurvey.created_at}
-              </div>
-            )}
+            <div className="w-1/2 m-2 mt-8">
+              <Summary text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+            </div>
           </div>
-          <Separator />
-          <div className="flex p-4">
-            {selectedSurvey.type === "webcam" ? (
-              <ScreenEmotions id={uuidv4()} />
-            ) : (
-              <video controls>
-                <source src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${selectedSurvey.survey_id}`} />
-              </video>
-            )}
+          <div className="m-2">
+            <Charts
+              data={{
+                facialExpreData: videoEmotions,
+                speechData: mockDataLineChart,
+              }}
+            />
+            <Verbatim />
           </div>
-          <Separator />
-          <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-            {selectedSurvey?.status}
-          </div>
-          <Separator className="mt-auto" />
-        </div>
-      ) : (
-        <div className="p-8 text-center text-muted-foreground">
-          No message selected
         </div>
       )}
-    </div>
+    </>
   );
 }
