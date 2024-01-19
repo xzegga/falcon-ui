@@ -19,10 +19,10 @@ export default function Charts({data}: {data: any}) {
             icon={<Laugh className="stroke-amber-600" />}
           />
           <div className="flex gap-2 h-[350px]">
-            <div className="w-1/2">
+            <div className="w-1/3">
               <PieChart data={dataSetTotals([...data.facialExpreData])} />
             </div>
-            <div className="w-1/2">
+            <div className="w-2/3">
               <TimeLineChart data={data.facialExpreData} />
             </div>
           </div>
@@ -36,10 +36,10 @@ export default function Charts({data}: {data: any}) {
             icon={<AudioLines className="stroke-fuchsia-800" />}
           />
           <div className="flex gap-2 h-[350px]">
-            <div className="w-1/2">
+            <div className="w-1/3">
               <PieChart data={data.speechData} />
             </div>
-            <div className="w-1/2">
+            <div className="w-2/3">
               <TimeLineChart data={data.speechData} />
             </div>
           </div>

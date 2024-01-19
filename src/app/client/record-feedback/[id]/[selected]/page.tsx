@@ -6,7 +6,6 @@ import ScreenEmotions from "@/components/composite/screenEmotions";
 import Image from "next/image";
 
 export default function LandingPage({ params }: { params: { id: string, selected: number } }) {
-    console.log(params.selected);
     
     const router = useRouter();
     return (
@@ -22,7 +21,7 @@ export default function LandingPage({ params }: { params: { id: string, selected
                     </div>
                     <div className="h-[450px] w-[580px] mt-2 flex flex-col justify-end items-end">
                         <div className="text-base max-w-[600px]">
-                            <ScreenEmotions id={params.id} />
+                            <ScreenEmotions id={params.id} selected={params.selected} />
                         </div>
                     </div>
                 </div>

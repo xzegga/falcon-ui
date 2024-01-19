@@ -33,7 +33,6 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       const [survey] = resultdbbyid;
       setSelectedSurvey(survey);
     }
-    console.log(selectedSurvey);
   }, [resultdbbyid]);
 
   return (
@@ -50,9 +49,9 @@ export default function RecordingView({ params }: { params: { id: string } }) {
                 </video>
               )}
             </div>
-            <div className="w-1/2 m-2 mt-8">
-              <Summary text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-            </div>
+            {selectedSurvey.analysis && <div className="w-1/2 m-2 mt-8">
+              <Summary text={selectedSurvey.analysis.content} />
+            </div>}
           </div>
           <div className="m-2">
             <Charts
