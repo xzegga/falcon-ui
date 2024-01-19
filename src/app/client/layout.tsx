@@ -16,11 +16,7 @@ export default function RootLayout({
     return (
         <>
             <Navbar />
-<<<<<<< Updated upstream
-            <div className="flex flex-col h-[calc(100vh-50px)] mt-14">
-=======
-            <div className="flex flex-col h-[100vh]">
->>>>>>> Stashed changes
+            <div className="flex flex-col h-[100vh]  mt-14">
                 {children}
             </div>
         </>
