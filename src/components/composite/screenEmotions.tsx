@@ -197,7 +197,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
   return (
     <NextUIProvider>
       <div>
-        
+
         <div className="relative bg-[#FAA71C] p-1 rounded-md w-[600px] h-[452px]">
           {videoRef.current && canvasRef.current && (
             <div className="z-20 absolute bottom-4 left-1/2 transform -translate-x-1/2">
@@ -229,32 +229,23 @@ export default function ScreenEmotions({ id }: { id: string }) {
           }
           <div>
             {
-              loading ? (
+              (loading || loadingdb) ? (
                 <div
                   className="w-full bg-[#FAA71C] flex gap-2 p-2 items-center space-x-2p-2
                         absolute z-20 box-border border-4 border-t-0 border-b-0 border-[#FAA71C] bottom-1">
                   <Spinner color="white" size="sm" />
-                  <span className="text-sm font-base text-white">Loading file, please wait...</span>
+                  <span className="text-sm font-base text-white">Loading and saving your recording, please wait...</span>
                 </div>
-              ) : ""}
-
-            {
-              loadingdb ? (
-                <div
-                  className="w-full bg-bg-yellow-500 flex gap-2 p-2 items-center space-x-2p-2
-                        absolute z-20 box-border border-4 border-t-0 border-b-0 border-[#FAA71C] bottom-1">
-                  <Spinner color="white" size="sm" />
-                  <span className="text-sm font-base text-white">Saving...</span>
-                </div>
-              ) : ""}
+              ) : ""
+            };
           </div>
           <div className="relative rounded-md overflow-hidden">
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
           <div>
-          <p>{transcript}</p>
-        </div>
+            <p>{transcript}</p>
+          </div>
         </div>
 
       </div >
