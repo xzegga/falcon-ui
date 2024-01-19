@@ -4,8 +4,10 @@ import TimeLineChart from "./timeLineChart";
 import PieChart from "./pieChart";
 import EmotionAnalysisLabel from "../ui/emotionAnalysisLabel";
 import { Laugh, AudioLines } from "lucide-react";
+import { dataSetTotals } from "@/lib/dataSetFormatter";
 
 export default function Charts({data}: {data: any}) {
+
   return (
     <div className="mb-8">
       <h1 className="text-xl text-secondary-600">Emotion Analysis</h1>
@@ -18,7 +20,7 @@ export default function Charts({data}: {data: any}) {
           />
           <div className="flex gap-2 h-[350px]">
             <div className="w-1/2">
-              <PieChart data={data.facialExpreData} />
+              <PieChart data={dataSetTotals([...data.facialExpreData])} />
             </div>
             <div className="w-1/2">
               <TimeLineChart data={data.facialExpreData} />

@@ -12,13 +12,13 @@ import { createClient } from "@/lib/supabase/client";
 export default function RecordingView({ params }: { params: { id: string } }) {
   const {
     loadingdb,
-    resultdb: resultdbbyid,
+    resultdbbyid,
     errordb,
     get,
   } = useSurvey() as any;
 
   const [ url, setUrl ] = useState<string>()
-
+  const [selectedSurvey, setSelectedSurvey] = useState<any>()
   const superbase = createClient()
 
   useEffect(()=>{
@@ -31,21 +31,21 @@ export default function RecordingView({ params }: { params: { id: string } }) {
     get(params.id);
   }, []);
 
-  const { video_emotions: videoEmotions } = resultdbbyid?.find(
-    (recording: any) => recording.survey_id === params.id || {}
-  );
-
   useEffect(() => {
-    console.log({ resultdbbyid, id: params.id });
+    if(resultdbbyid){
+      const [survey]=resultdbbyid
+      setSelectedSurvey(survey)
+    }
+    
   }, [resultdbbyid]);
 
   return (
     <>
-      {resultdbbyid && (
+      {selectedSurvey && (
         <div className="">
           <div className="flex flex-row">
             <div className="w-1/2 m-2 mt-8">
-              {resultdbbyid.type === "webcam" ? (
+              {selectedSurvey.type === "webcam" ? (
                 <ScreenEmotions id={uuidv4()} />
               ) : (
                 <video controls>
@@ -62,8 +62,8 @@ export default function RecordingView({ params }: { params: { id: string } }) {
           <div className="m-2">
             <Charts
               data={{
-                facialExpreData: videoEmotions,
-                speechData: mockDataLineChart,
+                facialExpreData: selectedSurvey?.video_emotions,
+                speechData: selectedSurvey?.video_emotions,
               }}
             />
             <Verbatim />

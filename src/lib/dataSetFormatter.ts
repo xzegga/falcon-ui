@@ -16,3 +16,18 @@ export function dataSetFormatter(dataset: Array<any>) {
 
     return dataSetEchart;
 }
+
+export function dataSetTotals(dataset: Array<any>) {
+    dataset.shift()
+    const summary: any = {}
+    for (const value of dataset){
+        const [emotion]=value
+        summary[emotion] ? summary[emotion]++ : summary[emotion] = 1
+    }
+    const pieDataSet = []
+    for(const val of Object.keys(summary)){
+        pieDataSet.push({value:summary[val],name: val})
+    }
+
+    return pieDataSet;
+}

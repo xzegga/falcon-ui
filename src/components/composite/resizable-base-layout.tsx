@@ -14,6 +14,7 @@ import { File } from "lucide-react";
 import Navbar from "../ui/navbar";
 import { useEffect } from "react";
 import { useSurvey } from "@/lib/db";
+import { dataSetTotals } from "@/lib/dataSetFormatter";
 
 export function ResizableBaseLayout({
   children,
@@ -56,7 +57,6 @@ export function ResizableBaseLayout({
       created_at: `${today.getHours()}:${today.getMinutes()}`,
     },
   ];
-
   return (
     <>
       {resultdb && (
