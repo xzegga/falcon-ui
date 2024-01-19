@@ -256,7 +256,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
-          {transcript !== '' ? <Transcript transcript={transcript} /> : null}
+          {transcript !== '' && isRecording === 'recording' ? <Transcript transcript={transcript} /> : null}
 
         </div>
 
