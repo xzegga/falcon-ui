@@ -8,7 +8,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { dataSetFormatter, topicsFormat, correlationTopicEmotion } from "@/lib/dataSetFormatter";
-import { topicsKeys, topics } from "@/lib/topics";
+import { topicsKeys, topics, TopicValue } from "@/lib/topics";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import { NextUIProvider } from "@nextui-org/react";
@@ -19,7 +19,12 @@ interface ExpressionSummary {
   [key: string]: number;
 }
 
-export default function ScreenEmotions({ id, selected }: { id: string, selected: number }) {
+export default function ScreenEmotions({ id, selected, topicsUtils }: {
+  id: string, selected: number, topicsUtils: {
+    topics: Set<TopicValue> | undefined,
+    setTopics: React.Dispatch<React.SetStateAction<Set<TopicValue> | undefined>>
+  }
+}) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -149,7 +154,7 @@ export default function ScreenEmotions({ id, selected }: { id: string, selected:
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
           setEmotions((current) => [...current, emotionObj]);
-          if(topics) console.log(topicsFormat(topics).topicValues)
+          if (topics) console.log(topicsFormat(topics).topicValues)
         }
       }
     }, 1000);
@@ -179,7 +184,10 @@ export default function ScreenEmotions({ id, selected }: { id: string, selected:
     setIsRecording('stopped');
     SpeechRecognition.stopListening();
     recordingStop();
-    if(topics) correlationTopicEmotion(topics, emotions)
+    if (topics) {
+      correlationTopicEmotion(topics, emotions)
+      topicsUtils.setTopics(topics);
+    }
     const survey = {
       title: "Test Survey",
       agent_id: "70250b46-de70-429f-a6d2-1d5e4d7b7611",

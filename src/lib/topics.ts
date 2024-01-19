@@ -5,7 +5,7 @@ const topicOptions = {
       matchInterim: true,
       fuzzyMatchingThreshold: 0.5,
 }
-interface TopicValue {
+export interface TopicValue {
   date: Date;
   topic: string
 }
