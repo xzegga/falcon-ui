@@ -66,7 +66,7 @@ export async function POST(
   const updateResult = id
     ? await supabase
         .from("survey")
-        .update({ transcript: dialogutranscripteArray })
+        .update({ transcript: dialogutranscripteArray, status: "pending" })
         .eq("survey_id", id)
         .select()
     : null;

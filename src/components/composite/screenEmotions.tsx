@@ -194,7 +194,7 @@ export default function ScreenEmotions({ id, selected, topicsUtils }: {
       start_date: stardDate,
       end_date: new Date(),
       type: "recording",
-      status: "pending",
+      status: "transcribing",
       topics: topicsFormat(topics).topicDataSet,
       correlation: topics ? correlationTopicEmotion(topics, emotions) : [],
       video_emotions: dataSetFormatter(emotions),
