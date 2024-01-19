@@ -43,11 +43,8 @@ export function RecordingList({ items }: RecordingListProps) {
                 <Moment format="hh:mm - DD/MM/YYYY">{item.created_at}</Moment>
               </div>
             </div>
-            <div className="flex justify-between w-full">
-              <div className="flex items-center mt-1 gap-2 wrap">
-                <Badge variant={getBadgeVariantFromLabel(item.type)}>
-                  {item.type.toUpperCase()}
-                </Badge>
+            <div className="flex justify-between w-full wrap">
+              <div className="flex items-center mt-1 gap-2">
                 <Badge variant={getBadgeVariantFromLabel(item["status"])}>
                   {item["status"].toUpperCase()}
                 </Badge>

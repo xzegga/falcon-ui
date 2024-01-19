@@ -17,7 +17,7 @@ export default function LandingPage() {
 
   return (
     <div className="h-[100%] flex flex-col justify-center items-center">
-      <Assistant showModal={showModal} setShowModal={setShowModal} />
+      <Assistant showModal={showModal} setShowModal={setShowModal} selected={selected}/>
 
       <div className="flex items-center justify-stretch pt-20">
         <div className="mr-10">

@@ -19,7 +19,7 @@ interface ExpressionSummary {
   [key: string]: number;
 }
 
-export default function ScreenEmotions({ id }: { id: string }) {
+export default function ScreenEmotions({ id, selected }: { id: string, selected: number }) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -189,6 +189,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
       status: "pending",
       topics: topicsFormat(topics).topicDataSet,
       video_emotions: dataSetFormatter(emotions),
+      score: selected,
     };
     insert({ ...survey, survey_id: id });
 
@@ -256,7 +257,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
-          {transcript !== '' ? <Transcript transcript={transcript} /> : null}
+          {transcript !== '' && isRecording === 'recording' ? <Transcript transcript={transcript} /> : null}
 
         </div>
 
