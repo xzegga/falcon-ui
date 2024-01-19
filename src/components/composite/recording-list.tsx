@@ -32,9 +32,6 @@ export function RecordingList({ items }: RecordingListProps) {
               </div>
             </div>
             <div className="flex items-center mt-1 gap-2">
-              {/* <Badge variant={getBadgeVariantFromLabel(item.type)}>
-                {item.type.toUpperCase()}
-              </Badge> */}
               <Badge variant={getBadgeVariantFromLabel(item["status"])}>
                 {item["status"].toUpperCase()}
               </Badge>

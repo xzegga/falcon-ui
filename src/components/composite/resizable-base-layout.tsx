@@ -62,19 +62,10 @@ export function ResizableBaseLayout({
       {resultdb && (
         <div className="flex flex-row">
           <div className="w-1/4">
-            <div className="flex justify-between items-center px-4 py-2 border-b border-gray-500">
+            <div className="flex justify-between items-center px-4 py-2">
               <h2 className="text-xl text-secondary-600">Recordings</h2>
-
             </div>
-            <div className="px-4 py-2">
-              <form className="w-full">
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search" className="pl-8" />
-                </div>
-              </form>
-            </div>
-            <div className="mt-2 py-4 bg-gray-200 overflow-y-scroll h-[calc(100vh)]">
+            <div className="mt-2 bg-gray-200 overflow-y-scroll h-[calc(100vh)]">
               <RecordingList items={resultdb} />
             </div>
           </div>
