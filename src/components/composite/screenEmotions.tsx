@@ -173,6 +173,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
       end_date: new Date(),
       type: "recording",
       status: "pending",
+      topics: topics,
       video_emotions: dataSetFormatter(emotions),
     };
     insert({ ...survey, survey_id: id });
