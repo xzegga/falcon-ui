@@ -1,12 +1,13 @@
 "use client";
 import ScreenEmotions from "../../../components/composite/screenEmotions";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSurvey } from "@/lib/db";
 import Summary from "@/components/composite/summary";
 import Charts from "@/components/composite/charts";
 import Verbatim from "@/components/composite/verbatim";
 import { mockDataLineChart, mockDataPieChart } from "@/lib/constants/mockData";
+import { createClient } from "@/lib/supabase/client";
 
 export default function RecordingView({ params }: { params: { id: string } }) {
   const {
@@ -16,6 +17,16 @@ export default function RecordingView({ params }: { params: { id: string } }) {
     get,
   } = useSurvey() as any;
 
+  const [ url, setUrl ] = useState<string>()
+
+  const superbase = createClient()
+
+  useEffect(()=>{
+      get(params.id);
+      const file = superbase.storage.from("recordings").getPublicUrl(`videos/${params.id}.mp4`)
+      setUrl(file.data.publicUrl);
+  },[]);
+  
   useEffect(() => {
     get(params.id);
   }, []);
@@ -39,7 +50,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
               ) : (
                 <video controls>
                   <source
-                    src={`https://tmilqubytvbtzbohphiq.supabase.co/storage/v1/object/public/recordings/${resultdbbyid?.survey_id}`}
+                    src={url}
                   />
                 </video>
               )}

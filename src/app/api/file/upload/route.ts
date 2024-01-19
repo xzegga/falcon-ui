@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/edge";
 import { SUPABASE_CONSTANTS } from "@/lib/supabase/constants";
 import { NextResponse } from "next/server";
 import { RequestCookies } from "@edge-runtime/cookies";
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;//http://localhost:3000
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL; //http://localhost:3000
 
 export async function POST(request: Request) {
   const cookies = new RequestCookies(request.headers);
