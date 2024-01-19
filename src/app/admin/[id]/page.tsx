@@ -33,7 +33,6 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       const [survey] = resultdbbyid;
       setSelectedSurvey(survey);
     }
-    console.log(selectedSurvey);
   }, [resultdbbyid]);
 
   return (

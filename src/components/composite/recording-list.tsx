@@ -1,15 +1,27 @@
 "use client";
-import { ComponentProps } from "react";
+import { ComponentProps, MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import Moment from 'react-moment';
-
+import Moment from "react-moment";
+import { useSurvey } from "@/lib/db";
+import { Button } from "../ui/button";
+import { TrashIcon } from "lucide-react";
+import { redirect, useRouter } from "next/navigation";
 interface RecordingListProps {
   items: any[];
 }
 
 export function RecordingList({ items }: RecordingListProps) {
+  const { remove } = useSurvey() as { remove: (id: string) => {} };
+  const router = useRouter();
+
+  const deleteSurvey = (id: string) => (evt: MouseEvent) => {
+    evt.preventDefault();
+    remove(id);
+    router.push("/admin");
+  };
+
   return (
     <div className="flex flex-col gap-2 p-4 pt-0">
       {items.map((item) => (
@@ -31,13 +43,23 @@ export function RecordingList({ items }: RecordingListProps) {
                 <Moment format="hh:mm - DD/MM/YYYY">{item.created_at}</Moment>
               </div>
             </div>
-            <div className="flex items-center mt-1 gap-2">
-              <Badge variant={getBadgeVariantFromLabel(item.type)}>
-                {item.type.toUpperCase()}
-              </Badge>
-              <Badge variant={getBadgeVariantFromLabel(item["status"])}>
-                {item["status"].toUpperCase()}
-              </Badge>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center mt-1 gap-2 wrap">
+                <Badge variant={getBadgeVariantFromLabel(item.type)}>
+                  {item.type.toUpperCase()}
+                </Badge>
+                <Badge variant={getBadgeVariantFromLabel(item["status"])}>
+                  {item["status"].toUpperCase()}
+                </Badge>
+              </div>
+              <Button
+                onClick={deleteSurvey(item.survey_id)}
+                size={"sm"}
+                variant="danger"
+                className="rounded-sm"
+              >
+                <TrashIcon />
+              </Button>
             </div>
           </div>
         </Link>

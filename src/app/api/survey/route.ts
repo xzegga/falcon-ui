@@ -55,6 +55,6 @@ export const DELETE = async (request: NextRequest) => {
     const supabase = createClient(cookies);
 
     const deleteResult = id ? await supabase.from("survey").delete().eq('survey_id',id) : null;
-
-    return NextResponse.json(deleteResult);
+    const { data: updatedResult } = await supabase.from("survey").select();
+    return NextResponse.json(updatedResult);
 };
