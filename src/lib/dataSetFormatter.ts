@@ -31,3 +31,15 @@ export function dataSetTotals(dataset: Array<any>) {
 
     return pieDataSet;
 }
+
+export function topicsFormat(topics: any){
+    const topicValues: Array<any> = []
+    topics.forEach((item: any)=>{
+      topicValues.push(item)
+    })
+    const topicsDataSet: any = dataSetFormatter(topicValues)
+    return {
+      topicDataSet: topicsDataSet,
+      topicValues: topicValues
+    }
+  }

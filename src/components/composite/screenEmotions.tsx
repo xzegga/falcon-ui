@@ -6,7 +6,7 @@ import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { dataSetFormatter } from "@/lib/dataSetFormatter";
+import { dataSetFormatter, topicsFormat } from "@/lib/dataSetFormatter";
 import { topicsKeys, topics } from "@/lib/topics";
 
 interface ExpressionSummary {
@@ -141,6 +141,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
 
           const emotionObj = { emotion: emotionDetected, date: new Date() };
           setEmotions((current) => [...current, emotionObj]);
+          console.log(topicsFormat(topics).topicValues)
         }
       }
     }, 1000);
@@ -173,7 +174,7 @@ export default function ScreenEmotions({ id }: { id: string }) {
       end_date: new Date(),
       type: "recording",
       status: "pending",
-      topics: topics,
+      topics: topicsFormat().topicDataSet,
       video_emotions: dataSetFormatter(emotions),
     };
     insert({ ...survey, survey_id: id });

@@ -26,7 +26,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       const file = superbase.storage.from("recordings").getPublicUrl(`videos/${params.id}.mp4`)
       setUrl(file.data.publicUrl);
   },[]);
-  
+
   useEffect(() => {
     get(params.id);
   }, []);
@@ -36,7 +36,7 @@ export default function RecordingView({ params }: { params: { id: string } }) {
       const [survey]=resultdbbyid
       setSelectedSurvey(survey)
     }
-    
+
   }, [resultdbbyid]);
 
   return (
