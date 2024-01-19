@@ -1,3 +1,5 @@
+import { TopicValue } from "../topics";
+
 export const mockDataLineChart = [
   ["emotion", "date"],
   ["happy", "2024-01-18T19:14:39.652Z"],
@@ -128,3 +130,17 @@ export const mockDataPieChart = [
   { value: 484, name: "Angry" },
   { value: 300, name: "Sad" },
 ];
+
+export const topics2: Set<TopicValue> = new Set([
+  {
+      date: new Date('2024-01-19T12:00:00Z'),
+      topic: 'Mock Topic 1',
+  },
+  {
+      date: new Date('2024-01-20T14:30:00Z'),
+      topic: 'Mock Topic 2',
+  },
+  {
+      date: new Date('2024-01-21T10:45:00Z'),
+      topic: 'Mock Topic 3',
+  }]);
