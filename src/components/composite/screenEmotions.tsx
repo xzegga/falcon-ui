@@ -13,6 +13,7 @@ import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import { NextUIProvider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import Transcript from "./live-transcription";
 
 interface ExpressionSummary {
   [key: string]: number;
@@ -205,7 +206,6 @@ export default function ScreenEmotions({ id }: { id: string }) {
     }
   }, [uploadStatus, surveyStatus]);
 
-  console.log(uploadStatus, surveyStatus);
 
   return (
     <NextUIProvider>
@@ -256,9 +256,8 @@ export default function ScreenEmotions({ id }: { id: string }) {
             <video crossOrigin="anonymous" ref={videoRef} autoPlay muted className="z-10" />
             <canvas ref={canvasRef} width="1" height="1" className="appcanvas absolute z-0" />
           </div>
-          <div>
-            <p>{transcript}</p>
-          </div>
+          {transcript !== '' ? <Transcript transcript={transcript} /> : null}
+
         </div>
 
       </div >
